@@ -1,0 +1,64 @@
+/*###ICF### Section handled by ICF editor, don't touch! ****/
+/*-Editor annotation file-*/
+/* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
+/*-Specials-*/
+define symbol __ICFEDIT_intvec_start__ = 0x08000000;
+define symbol code_start_address = 0x080000C0; //this address should be after the interrupt vector 
+define symbol reserved_1_start_address = 0x08008000;
+define symbol configuration_start_address = 0x08009000;
+define symbol reserved_2_start_address = 0x08009800;
+define symbol tripcode_start_address = 0x0800A000;
+define symbol reserved_3_start_address = 0x0800C000;
+define symbol configuration_backup_start_address = 0x0800F800;
+/*-Memory Regions-*/
+define symbol __ICFEDIT_region_ROM_start__ = 0x08000000;
+define symbol __ICFEDIT_region_ROM_end__   = 0x0800FFFF;
+define symbol __ICFEDIT_region_RAM_start__ = 0x20000000;
+define symbol __ICFEDIT_region_RAM_end__   = 0x20001FFF;
+/*-Sizes-*/
+define symbol __ICFEDIT_size_cstack__ = 0x600;
+define symbol __ICFEDIT_size_heap__ = 0x400;
+define symbol max_code_size = 0x7F40;  // 0x8000 minus interrupt vector size(0xC0)  
+define symbol max_reserved_1_size = 0x1000;
+define symbol max_configuration_size = 0x800;
+define symbol max_reserved_2_size = 0x800;
+define symbol max_tripcode_size = 0x2000;
+define symbol max_reserved_3_size = 0x3800;
+define symbol max_configuration_backup_size = 0x800;
+/**** End of ICF editor section. ###ICF###*/
+
+define memory mem with size = 4G;
+define region ROM_region   = mem:[from __ICFEDIT_region_ROM_start__   to __ICFEDIT_region_ROM_end__];
+define region RAM_region   = mem:[from __ICFEDIT_region_RAM_start__   to __ICFEDIT_region_RAM_end__];
+
+define block CHECKSUM { section .checksum };
+define block VERSION { section .version  };
+/* define code block that includes the compiled code, checksum and version*/ 
+define block code_block             with maximum size = max_code_size, fixed order {readonly, block CHECKSUM, block VERSION};
+define block reserved_1_block       with maximum size = max_reserved_1_size {};
+define block configuration_block    with maximum size = max_configuration_size {};
+define block reserved_2_block       with maximum size = max_reserved_2_size {};
+define block tripcode_block         with maximum size = max_tripcode_size {};
+define block reserved_3_block       with maximum size = max_reserved_3_size {};
+define block configuration_backup_block with maximum size = max_configuration_backup_size {};
+define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+
+initialize by copy { readwrite };
+do not initialize  { section .noinit };
+
+place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
+
+
+place at address mem:code_start_address { block code_block };
+place at address mem:reserved_1_start_address { block reserved_1_block };
+place at address mem:configuration_start_address { block configuration_block };
+place at address mem:reserved_2_start_address { block reserved_2_block };
+place at address mem:tripcode_start_address { block tripcode_block };
+place at address mem:reserved_3_start_address { block reserved_3_block };
+place at address mem:configuration_backup_start_address { block configuration_backup_block };
+place in RAM_region   { readwrite,
+                        block CSTACK, block HEAP };
+
+export symbol __ICFEDIT_region_RAM_start__;
+export symbol __ICFEDIT_region_RAM_end__;

@@ -1,0 +1,3 @@
+PROJECT_NAME =  "CRDS Breaker Firmware"
+OUTPUT_DIRECTORY = release/doxygen 
+DIAFILE_DIRS = src/main src/adc src/iwdg src/spi src/gpio src/timer src/sys src/btn src/trip src/micro_test src/flash src/led src/trip_log src/self_test src/shunt_cal src/interrupt C:/dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/src 

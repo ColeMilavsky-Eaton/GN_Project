@@ -1,0 +1,176 @@
+#ifndef _HARDWARE_PIN_CONFIG
+#define _HARDWARE_PIN_CONFIG
+/**************************************************************************************************/
+/*
+ *                      Eaton Electrical
+ *
+ *                      Proprietary Information
+ *                      (C) Copyright 2021
+ *                      All rights reserved
+ *
+ ***************************************************************************************************
+ *  Written by:         Aaron Joseph
+ *                      Eaton Electrical
+ *                      1000 Cherrington Parkway
+ *                      Pittsburgh, PA  15108-4312
+ *                      (412) 893-3300
+ *//**
+ *
+ * @brief macros defining pin configuration for building 1 pole BR AFGF firmware
+ *
+ * @file br_1p_afgf.pin_config
+ * @ingroup hardware_init
+ *
+ *
+ *//*
+ *
+ **************************************************************************************************/
+#include "types.h"
+#include "stm32g0xx.h"
+
+/** @name Pin_Configuration macros for defining pin configuration
+ * @{ */
+
+#define LED_1_Pin LL_GPIO_PIN_0
+#define LED_1_GPIO_Port GPIOB
+
+#define LED_1_DRIVE_Pin  BTN_1_Pin
+#define LED_1_DRIVE_Port BTN_1_GPIO_Port
+
+#define BTN_1_Pin LL_GPIO_PIN_6
+#define BTN_1_GPIO_Port GPIOB
+
+#define BTN_1_DRIVE_Pin LED_1_Pin
+#define BTN_1_DRIVE_Port LED_1_GPIO_Port
+
+#define NRST_Pin LL_GPIO_PIN_2
+#define NRST_GPIO_Port GPIOF
+
+#define VLOAD_Pin LL_GPIO_PIN_1
+#define VLOAD_GPIO_Port GPIOB
+
+#define GF_Pin LL_GPIO_PIN_7
+#define GF_GPIO_Port GPIOA
+
+#define GF_OFFSET_Pin LL_GPIO_PIN_2
+#define GF_OFFSET_GPIO_Port GPIOB
+
+#define TEST_GF_Pin LL_GPIO_PIN_10
+#define TEST_GF_GPIO_Port GPIOA
+
+#define GN_Pin LL_GPIO_PIN_4
+#define GN_GPIO_Port GPIOA
+
+#define TRIP_1_Pin LL_GPIO_PIN_15
+#define TRIP_1_GPIO_Port GPIOC
+
+#define TRIP_2_Pin LL_GPIO_PIN_9
+#define TRIP_2_GPIO_Port GPIOA
+
+#define REGULATE_Pin LL_GPIO_PIN_0
+#define REGULATE_GPIO_Port GPIOA
+
+#define SWD_IO_Pin LL_GPIO_PIN_13
+#define SWD_IO_GPIO_Port GPIOA
+
+#define SWD_CLK_Pin LL_GPIO_PIN_14
+#define SWD_CLK_GPIO_Port GPIOA
+
+#define MICRO_IS_ACTIVE_Pin LL_GPIO_PIN_3
+#define MICRO_IS_ACTIVE_GPIO_Port GPIOA
+
+#define ZCD_1_Pin LL_GPIO_PIN_5
+#define ZCD_1_GPIO_Port GPIOA
+#define ZCD_1_EXTI_IRQn EXTI4_15_IRQn
+#define ZCD_1_EXTI_LINE LL_EXTI_LINE_5
+
+#define ZCD_2_Pin ZCD_1_Pin
+#define ZCD_2_GPIO_Port ZCD_1_GPIO_Port
+#define ZCD_2_EXTI_IRQn ZCD_1_EXTI_IRQn
+#define ZCD_2_EXTI_LINE ZCD_1_EXTI_LINE
+
+#define LOAD_CURRENT_BIAS_Pin LL_GPIO_PIN_6
+#define LOAD_CURRENT_BIAS_GPIO_Port GPIOC
+
+#define LOAD_CURRENT_Pin LL_GPIO_PIN_12
+#define LOAD_CURRENT_GPIO_Port GPIOA
+
+#define TEST_CURRENT_Pin LL_GPIO_PIN_8
+#define TEST_CURRENT_GPIO_Port GPIOA
+
+#define SPI_MISO_Pin        LL_GPIO_PIN_4
+#define SPI_MISO_GPIO_Port  GPIOB
+
+#define SPI_MOSI_Pin        LL_GPIO_PIN_5
+#define SPI_MOSI_GPIO_Port  GPIOB
+
+#define SPI_CLK_Pin LL_GPIO_PIN_3
+#define SPI_CLK_GPIO_Port GPIOB
+
+#define SPI_CS_Pin LL_GPIO_PIN_9
+#define SPI_CS_GPIO_Port GPIOB
+
+#define SHUNT_TEMPERATURE_Pin LL_GPIO_PIN_1
+#define SHUNT_TEMPERATURE_GPIO_Port GPIOA
+
+#define LOG_ENABLE_Pin LL_GPIO_PIN_2
+#define LOG_ENABLE_GPIO_Port GPIOA
+
+#define HF_MIN_Pin LL_GPIO_PIN_6
+#define HF_MIN_GPIO_Port GPIOA
+
+#define TEST_HF_Pin LL_GPIO_PIN_11
+#define TEST_HF_GPIO_Port GPIOA
+
+#define HF_SENSE_Pin LL_GPIO_PIN_7
+#define HF_SENSE_GPIO_Port GPIOB
+
+/****************************************************
+*               unused pins
+****************************************************/
+
+#define UNUSED_PA15_Pin LL_GPIO_PIN_15
+#define UNUSED_PA15_GPIO_Port GPIOA
+
+#define UNUSED_PB8_Pin LL_GPIO_PIN_8
+#define UNUSED_PB8_GPIO_Port GPIOB
+
+#define UNUSED_PC14_Pin LL_GPIO_PIN_14
+#define UNUSED_PC14_GPIO_Port GPIOC
+
+/** @} */
+
+
+/** @name button_configuration macros for all buttons that exist in the system
+ * @{ */
+
+#define BTN_1_ID  (1)
+
+/** @} */
+
+
+/** @name LED_Configuration macros for all LEDs that exist in the system
+ * @{ */
+ 
+#define RED_LED_ID          (1)
+
+/** @} */
+
+
+/** @name ADC_Configuration list of available ADC channels
+ * @{ */
+ 
+#define SHUNT_TEMPERATURE_CHANNEL   LL_ADC_CHANNEL_1
+#define GN_ADC_CHANNEL              LL_ADC_CHANNEL_4
+#define HF_MIN_ADC_CHANNEL          LL_ADC_CHANNEL_6
+#define GF_ADC_CHANNEL              LL_ADC_CHANNEL_7
+#define V_PEAK_1_ADC_CHANNEL        LL_ADC_CHANNEL_9
+#define HF_SENSE_CHANNEL            LL_ADC_CHANNEL_11
+#define LOAD_CURRENT_CHANNEL        LL_ADC_CHANNEL_16
+
+/** @} */
+
+#endif /* _HARDWARE_PIN_CONFIG */
+
+
+
