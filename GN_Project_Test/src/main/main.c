@@ -27,6 +27,33 @@
 #ifndef MAIN_C
 #define MAIN_C
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Used for testing, not needed for final project
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+void LED_Init(void) {
+    __HAL_RCC_GPIOB_CLK_ENABLE(); // Enable the GPIOB clock
+
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_PIN_3; // Pin 3 is the built-in LED on the Nucleo-32
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+}
+
+// Function to blink the LED
+void Blink_LED(void) {
+    LED_Init(); // Initialize the LED
+
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_3); // Toggle the LED
+        HAL_Delay(500); // Delay for 500 milliseconds
+    }
+}
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -34,7 +61,7 @@
 int main(void)
 {
   /* MCU Configuration--------------------------------------------------------*/
-
+	printf("Start...");
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
@@ -73,7 +100,8 @@ int main(void)
 	  if (getFrequency() < 1500000) // Not sure exact value to compare frequency with(frequency should equal 2000000)
 	  {
 	     // Handle fault condition
-	     LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
+		 //Blink_LED(); // Used for testing, will delete in final project
+	     //LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit // Commented out for testing
 	     while(1) {} // Latch in fault state
 	  }
 	}

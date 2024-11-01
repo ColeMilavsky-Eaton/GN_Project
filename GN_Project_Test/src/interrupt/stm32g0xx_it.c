@@ -77,16 +77,16 @@ u32 loss_of_zcd_counter;
 #endif
 
 #warning this external variable will eventually get removed once ioman is further developed. Only used now so gf could be tested
-extern u32 gf_data;
+/*extern */u32 gf_data;
 /*extern */u32 main_load_voltage[MAX_NUM_POLES];
 //extern u32 af_data;
 /*extern */u32 gn_data;
 //extern u32 hf_sense_data;
 /*extern */bool gf_polarity_positive;
 //extern u32 gf_sample_integral;
-extern u32 gf_bias;
+/*extern */u32 gf_bias;
 extern u32 hall_data_adc;
-extern bool trip_class_1_flag;
+/*extern */bool trip_class_1_flag;
 #if defined POWER_LOSS_DETECTION
 //extern volatile u32 power_loss_detection_possibility_level;
 #endif
@@ -95,7 +95,7 @@ extern bool trip_class_1_flag;
 u32 hrgf_running_fault_counter = 0;
 #endif
 
-extern u32 raw_sol_adc_value;
+/*extern */u32 raw_sol_adc_value;
 #if OVERLOAD_CONFIGURATION == OVERLOAD_ENABLED
 extern u32 main_load_current_plus_bias;
 extern u32 main_load_current_bias;

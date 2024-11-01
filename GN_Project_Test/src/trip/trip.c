@@ -48,7 +48,7 @@
 GPIO_TypeDef *zcd_port;
 u32 zcd_pin;
 extern bool trip_class_1_flag;
-extern bool primary_switch_open_flag;
+/*extern */bool primary_switch_open_flag;
 
 #if NUM_POLES_CONFIGURATION == SINGLE_POLE
 void trip_routine(u8* trip_code_data, u8 num_bytes)

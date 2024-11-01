@@ -44,7 +44,7 @@ LNK_CMD       = $(IAR_BIN_PATH)/ilinkarm.exe
 ######################################
 # target
 ###################################### 
-TARGET = CRDS-breaker-firmware
+TARGET = GN_Project_Test
 
 ######################################
 # configuration file path 

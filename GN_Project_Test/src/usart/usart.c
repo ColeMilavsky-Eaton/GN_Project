@@ -43,7 +43,7 @@ extern bool led_idenfify_me_on_going_flag;
 extern u8 led_identify_me_blink_mode;
 extern u32 hall_data_adc;
 extern u32 total_gf_current;
-extern bool startup_conf;
+/*extern */bool startup_conf;
 extern u64 __version;
 extern s16 temperature_c_trending;
 
