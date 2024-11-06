@@ -1,28 +1,25 @@
 -include ../makefile.init
 
+COMPONENTS = main
+DRIVER_COMPONENT := utils exti gpio tim spi
+
+###########################################
+### PATHS
+###########################################
+
 IAR_PATH = "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm"
 IAR_BIN_PATH = $(IAR_PATH)\bin
 SRC_DIR = Code
 LIB_PATH = C:/dev/libs
+
+HAL_DRIVER_PATH = $(LIB_PATH)/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver
+CMSIS_DRIVER_PATH = $(LIB_PATH)/ST/stm32/stm32g0xx/CMSIS
 BRK_CORE_PATH = $(LIB_PATH)/breaker_core
 CONFIG_FILE_PATH := Code\config\SB\2_pole\GFCI
 UTILS_PATH = $(LIB_PATH)/utilities
 
-# Define the compiler and other tools with full paths
-CC := "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin/arm-none-eabi-gcc.exe"
-#AS := "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin/arm-none-eabi-as.exe"
-#CP := "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin/arm-none-eabi-objcopy.exe"
-SZ := "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin/arm-none-eabi-size.exe"
-RM := del /Q
-
-#CC = $(IAR_BIN_PATH)\iccarm.exe
-AS = $(IAR_BIN_PATH)\iasmarm.exe
-LN = $(IAR_BIN_PATH)\ilinkarm.exe
-
-CP = $(IAR_BIN_PATH)\ielftool.exe
-
-HEX = $(CP) --ihex --verbose
-SREC = $(CP) --srec --verbose
+# link script
+LNSCRIPT = Code/sys/stm32g071xx_flash.icf
 
 # Project name
 TARGET = GN_Project
@@ -30,6 +27,24 @@ TARGET = GN_Project
 # Build Directory
 BUILD_DIR = Build
 
+###########################################
+### TOOLS
+###########################################
+
+# Define the compiler and other tools with full paths 
+RM := del /Q
+
+CC = $(IAR_BIN_PATH)\iccarm.exe
+AS = $(IAR_BIN_PATH)\iasmarm.exe
+LN = $(IAR_BIN_PATH)\ilinkarm.exe
+CP = $(IAR_BIN_PATH)\ielftool.exe
+
+HEX = $(CP) --ihex --verbose
+SREC = $(CP) --srec --verbose
+
+###########################################
+### FLAGS SETUP
+###########################################
 # optimization
 OPT = -Ol
 
@@ -51,23 +66,36 @@ MCU = --cpu=$(CPU) $(CPU_MODE) $(FPU) $(ENDIAN)
 #Enable IAR language extensions
 LANG_EXT_ENB = -e
 
+###########################################
+### SOURCES
+###########################################
+
 # Create the build directory if it doesn't exist
 create_build_dir:
 	@if not exist "$(BUILD_DIR)" mkdir "$(BUILD_DIR)"
 
-C_SOURCES =  \
-Code/main.c \
-../dev/libs/ST/stm32/stm32g0xx/CMSIS/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_tim.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_rcc.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_utils.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_exti.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_gpio.c \
-../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_spi.c
+C_FILES = $(addsuffix .c, $(COMPONENTS))
+C_FILES = $(addsuffix .c, $(addprefix stm32g0xx_ll_,$(DRIVER_COMPONENT)))
+C_SRC_DIRS = $(addprefix $(SRC_DIR)/, $(COMPONENTS))
+C_SRC_DIRS += $(HAL_DRIVER_PATH)/src
+
+C_SOURCES = $(join $(addsuffix /, $(C_SRC_DIRS)), $(C_FILES))
+C_SOURCES += $(SRC_DIR)/main.c
+C_SOURCES += $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_tim.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_rcc.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_utils.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_exti.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_gpio.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_spi.c
 
 # ASM sources
-ASM_SOURCES =  \
-../dev/libs/ST/stm32/stm32g0xx/CMSIS/Device/ST/STM32G0xx/Source/Templates/arm/startup_stm32g071xx.s
+ASM_SOURCES =  $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/arm/startup_stm32g071xx.s
+
+###########################################
+### OBJECTS
+###########################################
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
@@ -81,6 +109,10 @@ vpath %.s $(sort $(dir $(ASM_SOURCES)))
 C_OBJS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_LIST))
 ASM_OBJS = $(patsubst %.s,$(BUILD_DIR)/%.o,$(ASM_LIST))
 OBJS = $(C_OBJS) $(ASM_OBJS)
+
+###########################################
+### DEFINITIONS
+###########################################
 
 # AS defines
 AS_DEFS = 
@@ -101,6 +133,10 @@ C_DEFS =  \
 -DDATA_CACHE_ENABLE=1 \
 -DSTM32G071xx
 
+###########################################
+### INCLUDES
+###########################################
+
 # AS includes
 AS_INCLUDES = 
 
@@ -108,48 +144,46 @@ AS_INCLUDES =
 DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h
 
 # Include paths
-C_INCLUDES := \
--I"C:/GN_Project/Code" \
--I"C:/GN_Project/Code/protection/main" \
--I"C:/GN_Project/Code/protection/sys" \
--I"C:/dev/libs" \
--I"C:/dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Inc" \
--I"C:/dev/libs/ST/stm32/stm32g0xx/CMSIS/Device/ST/STM32G0xx/Include" \
--I"C:/dev/libs/ST/stm32/stm32g0xx/CMSIS/Include" \
--I"C:/dev/libs/utilities/utilities-0.0.2/inc"
+C_INCLUDES = -I"C:/GN_Project/Code" \
+C_INCLUDES += -I"C:/GN_Project/Code/protection/main" \
+C_INCLUDES += -I"C:/GN_Project/Code/protection/sys" \
+C_INCLUDES += -I"C:/dev/libs" \
+C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
+C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
+C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Include
+C_INCLUDES += -I$(UTILS_PATH)/utilities-0.0.2/inc
 
-# Compile flags
-#CFLAGS = -mcpu=cortex-m0plus -mthumb -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP
-#CFLAGS += -DUSE_FULL_LL_DRIVER -DSTM32G0xx -DUSE_HAL_DRIVER -DSTM32G071xx
-#CFLAGS += $(C_INCLUDES)
+###########################################
+### FLAGS
+###########################################
 
 DEBUG_CFLAGS = $(MCU) $(C_DEFS) $(DLIB) $(C_INCLUDES) $(OPT) $(LANG_EXT_ENB) --debug --f debug.config -DSTATIC="static"
 
 ASFLAGS = -s+ -w+ -r --cpu $(CPU) $(AS_DEFS) $(AS_INCLUDES)
 
+###########################################
+### LINK AND COMPILE
+###########################################
+
 # Linker script
 LDSCRIPT = C:\GN_Project\STM32G071CBU6_FLASH.ld
 
 # Linker flags
-LDFLAGS = -mcpu=cortex-m0plus -mthumb -T$(LDSCRIPT) -Wl,-Map=$(TARGET).map,--cref -Wl,--gc-sections
+#LDFLAGS = -mcpu=cortex-m0plus -mthumb -T$(LDSCRIPT) -Wl,-Map=$(TARGET).map,--cref -Wl,--gc-sections
+LNFLAGS = --redirect _//printf=_//printfFull --redirect _Scanf=_ScanfFull --no_out_extension --semihosting --entry __iar_program_start --vfe --text_out locale 
+LNFLAGS += --place_holder __build_checksum,4,.checksum,16 --keep=__build_checksum 
+LNFLAGS += --place_holder __version,8,.version,16 --keep=__version 
 
 # Libraries
-LIBS = ---lc -lm ---lnosys 
+LIBS = -lc -lm -lnosys 
 
 # Compile rule
 $(BUILD_DIR)/%.o: %.c Makefile FORCE
 	@echo 'Building file: $<'
 	@echo 'Invoking: Compiler'
-	$(CC) $(CFLAGS) -c -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@
 	@echo 'Finished building: $<'
 	@echo '	'
-
-#$(BUILD_DIR)/%.o: %.c
-#	@echo 'Building file: $<'
-#	@echo 'Invoking: Compiler'
-#	$(CC) $(CFLAGS) $(C_INCLUDES) -c -o "$@" "$<"
-#	@echo 'Finished building: $<'
-#	@echo '	'
 
 $(BUILD_DIR)/%.o: %.s Makefile FORCE
 	@echo 'Building file: $<'
@@ -158,21 +192,15 @@ $(BUILD_DIR)/%.o: %.s Makefile FORCE
 	@echo 'Finished building: $<'
 	@echo '	'
 
-#$(BUILD_DIR)/%.o: %.s
-#	@echo 'Building file: $<'
-#	@echo 'Invoking: Cross ARM GNU Assembler'
-#	$(CC) -mcpu=cortex-m0plus -mthumb -g -c -x assembler-with-cpp -o "$@" "$<"
-#	@echo 'Finished building: $<'
-#	@echo '	'
-
 # Link rule
-$(BUILD_DIR)/$(TARGET).elf: $(C_OBJS) $(ASM_OBJS)
-	@echo 'Building target: $@'
+$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) main.o Makefile
 	@echo 'Invoking: Linker'
-	$(CC) $(LDFLAGS) -o "$@" $^ $(OBJS) $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ' '
-	$(SZ) "$@"
+	$(LN) main.o $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
+	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x8000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
+
+###########################################
+### BUILD TARGETS
+###########################################
 
 # All target
 all: create_build_dir $(OBJS) $(BUILD_DIR)/$(TARGET).elf
@@ -186,10 +214,10 @@ clean:
 	@echo 'Cleaned up object files and binaries.'
 
 # Generate binary and hex files
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf
+$(BUILD_DIR)/GN_Project.hex: $(BUILD_DIR)/GN_Project.elf
 	$(HEX) $< $@
 
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
+$(BUILD_DIR)/GN_Project.bin: $(BUILD_DIR)/GN_Project.elf
 	$(CP) -O binary $< $@
 	
 # Load hardware configuration

@@ -30,7 +30,7 @@
 #include "types.h"
 #include "adc_.h"
 #include "gpio_.h"
-//#include "spi_.h"
+#include "spi_.h"
 #include "firmware.config"
 
 #define UNUSED(_pin, _port) GPIO_InitStruct.Pin = (_pin);\
@@ -477,7 +477,7 @@ void reconfigure_cap_config_output(void)
     LL_GPIO_Init(STARTUP_CAP_CONF_GPIO_Port, &GPIO_InitStruct);
 }
 
-/*
+
 void spi_init_component(void)
 {
     LL_SPI_InitTypeDef SPI_InitStruct = {0};
@@ -544,5 +544,5 @@ void spi_init_component(void)
 
     return;
 }
-*/
+
 

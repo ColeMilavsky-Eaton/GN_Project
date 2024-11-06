@@ -31,7 +31,6 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 #include "../main/main_internal.h"
-#include "stm32g0xx_ll_spi.h"
 #include "stm32g0xx_hal.h"
 
 #if defined(USE_FULL_ASSERT)

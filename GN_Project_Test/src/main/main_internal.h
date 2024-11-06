@@ -38,9 +38,9 @@
 #include "stm32g0xx_ll_dma.h"
 #include "stm32g0xx_ll_usart.h"
 
-#if BOARD_CONFIGURATION != BOARD_SB2  //Smart Breaker boards do not contain spi interface
+//#if BOARD_CONFIGURATION != BOARD_SB2  //Smart Breaker boards do not contain spi interface
 #include "stm32g0xx_ll_spi.h"
-#endif
+//#endif
 #include "stm32g0xx_ll_tim.h"
 #include "stm32g0xx_ll_gpio.h"
 #include "../main/main_api.h"

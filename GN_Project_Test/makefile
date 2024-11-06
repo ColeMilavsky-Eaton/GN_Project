@@ -21,7 +21,7 @@
 ######################################
 # components
 ######################################
-COMPONENTS := main adc iwdg gpio timer sys btn trip micro_test flash led trip_log self_test shunt_cal secondary_solenoid open_fdbk usart primary_switch power_loss_detection temperature_control
+COMPONENTS := main adc iwdg gpio timer sys btn trip micro_test flash led trip_log self_test shunt_cal secondary_solenoid open_fdbk usart primary_switch power_loss_detection temperature_control spi
 DRIVER_COMPONENT := utils exti gpio adc dma rcc pwr tim usart spi
 
 IAR_PATH = "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm"
@@ -180,12 +180,12 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES = $(addprefix -I$(SRC_DIR)/, $(COMPONENTS))
-C_INCLUDES += -Isrc/sys
+#C_INCLUDES += -Isrc/sys
 C_INCLUDES += -Isrc/interrupt
 C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Include
-C_INCLUDES += -I$(UTILS_PATH)/utilities-0.0.2/inc
+#C_INCLUDES += -I$(UTILS_PATH)/utilities-0.0.2/inc
 
 #dlib
 DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h

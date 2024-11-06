@@ -36,6 +36,22 @@
 /** @name Pin_Configuration macros for defining pin configuration
  * @{ */
 
+// ADDED FOR GN_PROJECT SPI INTEGRATION //
+
+#define SPI_CLK_Pin LL_GPIO_PIN_1
+#define SPI_CLK_GPIO_Port GPIOA
+
+#define SPI_MOSI_Pin LL_GPIO_PIN_2
+#define SPI_MOSI_GPIO_Port GPIOA
+
+#define SPI_CS_Pin LL_GPIO_PIN_4
+#define SPI_CS_GPIO_Port GPIOA
+
+#define SPI_MISO_Pin LL_GPIO_PIN_6
+#define SPI_MISO_GPIO_Port GPIOA
+
+//////////////////////////////////////////
+
 #define LED_Green_Pin LL_GPIO_PIN_2
 #define LED_Green_GPIO_Port GPIOD
 

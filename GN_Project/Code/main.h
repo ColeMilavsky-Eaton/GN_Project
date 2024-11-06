@@ -51,6 +51,8 @@ extern "C" {
 #define TIMCLOCK 64000000
 #define PRESCALAR 65535
 
+#define HAL_MODULE_ENABLED
+
 /* Private Variables ---------------------------------------------*/
 static float frequency = 0;
 static uint32_t lastCaptureValue = 0;

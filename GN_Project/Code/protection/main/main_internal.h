@@ -27,6 +27,8 @@
 #include "utils.h"
 #include "stm32g0xx_ll_adc.h"
 #include "stm32g0xx.h"
+#include "stm32g0xx_hal.h"
+#include "stm32g0xx_hal_conf.h"
 #include "stm32g0xx_ll_iwdg.h"
 #include "stm32g0xx_ll_rcc.h"
 #include "stm32g0xx_ll_bus.h"

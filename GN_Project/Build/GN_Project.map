@@ -1,0 +1,323 @@
+###############################################################################
+#
+# IAR ELF Linker V8.40.1.212/W32 for ARM                  06/Nov/2024  09:39:32
+# Copyright 2007-2019 IAR Systems AB.
+#
+#    Output file  =  Build/GN_Project.elf
+#    Map file     =  Build/GN_Project.map
+#    Command line =
+#        main.o C:/dev/libs/utilities/utilities-0.0.1/lib/utilities-0.0.1.a
+#        C:/dev/libs/breaker_core/breaker_core-1.1.1/lib/breaker_core-1.1.1.a
+#        --redirect _//printf=_//printfFull --redirect _Scanf=_ScanfFull
+#        --no_out_extension --semihosting --entry __iar_program_start --vfe
+#        --text_out locale --place_holder __build_checksum,4,.checksum,16
+#        --keep=__build_checksum --place_holder __version,8,.version,16
+#        --keep=__version --config Code/sys/stm32g071xx_flash.icf -o
+#        Build/GN_Project.elf --map Build/GN_Project.map
+#
+###############################################################################
+
+*******************************************************************************
+*** MESSAGES
+***
+
+Error[Li005]: no definition for "HAL_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_mDelay" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_GPIO_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_EXTI_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_SPI_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_TIM_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_TIM_OC_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_TIM_BDTR_Init" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_Init1msTick" [referenced from
+          C:\GN_Project\main.o]
+Error[Li005]: no definition for "LL_SetSystemCoreClock" [referenced from
+          C:\GN_Project\main.o]
+
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x800'0000 { ro section .intvec };
+define block CHECKSUM { section .checksum };
+define block VERSION { section .version };
+define block code_block
+   with fixed order, maximum size = 98116 { ro, block CHECKSUM, block VERSION };
+"A1":  place at address 0x800'00bc { block code_block };
+define block CSTACK with size = 1K, alignment = 8 { };
+define block HEAP with size = 512, alignment = 8 { };
+"P1":  place in [from 0x2000'0000 to 0x2000'8fff] {
+          rw, block CSTACK, block HEAP };
+
+  Section            Kind         Address   Size  Object
+  -------            ----         -------   ----  ------
+"A0":                                       0x40
+  .intvec            ro code   0x800'0000   0x40  vector_table_M.o [4]
+                             - 0x800'0040   0x40
+
+"A1":                                      0xc6c
+  code_block                   0x800'00bc  0xc6c  <Block>
+    .rodata          const     0x800'00bc    0xc  main.o [1]
+    .rodata          const     0x800'00c8    0xc  main.o [1]
+    .rodata          const     0x800'00d4    0xc  main.o [1]
+    .rodata          const     0x800'00e0    0xc  main.o [1]
+    .text            ro code   0x800'00ec  0xac8  main.o [1]
+    .text            ro code   0x800'0bb4   0x14  memset.o [4]
+    .text            ro code   0x800'0bc8   0x26  FltCmpLe.o [3]
+    .text            ro code   0x800'0bee    0x2  vector_table_M.o [4]
+    .text            ro code   0x800'0bf0   0x4e  ABImemset.o [4]
+    .text            ro code   0x800'0c40   0x1e  cmain.o [4]
+    .text            ro code   0x800'0c5e    0x4  low_level_init.o [2]
+    .text            ro code   0x800'0c64   0x28  data_init.o [4]
+    .text            ro code   0x800'0c8c    0x8  exit.o [2]
+    .text            ro code   0x800'0c94    0xa  cexit.o [4]
+    .text            ro code   0x800'0ca0   0x14  exit.o [5]
+    .text            ro code   0x800'0cb4    0xc  cstartup_M.o [4]
+    .text            ro code   0x800'0cc0   0x3c  zero_init3.o [4]
+    .iar.init_table  const     0x800'0cfc   0x10  - Linker created -
+    .rodata          const     0x800'0d0c    0x0  zero_init3.o [4]
+    CHECKSUM                   0x800'0d10    0x4  <Block>
+      .checksum      const     0x800'0d10    0x4  Place holder __build_checksum
+    VERSION                    0x800'0d20    0x8  <Block>
+      .version       const     0x800'0d20    0x8  Place holder __version
+                             - 0x800'0d28  0xc6c
+
+"P1", part 1 of 2:                           0x8
+  .bss               zero     0x2000'0000    0x4  main.o [1]
+  .bss               zero     0x2000'0004    0x4  main.o [1]
+                            - 0x2000'0008    0x8
+
+"P1", part 2 of 2:                         0x400
+  CSTACK                      0x2000'0008  0x400  <Block>
+    CSTACK           uninit   0x2000'0008  0x400  <Block tail>
+                            - 0x2000'0408  0x400
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+  0x2000'0408  0x2000'8fff  0x8bf8
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x8:
+          0x2000'0000   0x8
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                         ro code  ro data  rw data
+    ------                         -------  -------  -------
+command line/config:
+    Place holder __build_checksum                 4
+    Place holder __version                        8
+    --------------------------------------------------------
+    Total:                                       12
+
+C:\GN_Project: [1]
+    main.o                           2'760       48        8
+    --------------------------------------------------------
+    Total:                           2'760       48        8
+
+dl6M_tln.a: [2]
+    exit.o                               8
+    low_level_init.o                     4
+    --------------------------------------------------------
+    Total:                              12
+
+m6M_tl.a: [3]
+    FltCmpLe.o                          38
+    --------------------------------------------------------
+    Total:                              38
+
+rt6M_tl.a: [4]
+    ABImemset.o                         78
+    cexit.o                             10
+    cmain.o                             30
+    cstartup_M.o                        12
+    data_init.o                         40
+    memset.o                            20
+    vector_table_M.o                    66
+    zero_init3.o                        60
+    --------------------------------------------------------
+    Total:                             316
+
+shb_l.a: [5]
+    exit.o                              20
+    --------------------------------------------------------
+    Total:                              20
+
+    Gaps                                 6
+    Linker created                               16    1'024
+------------------------------------------------------------
+    Grand Total:                     3'152       76    1'032
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base    0x800'0cfc          --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'0d0c          --   Gb  - Linker created -
+?main                    0x800'0c41         Code  Gb  cmain.o [4]
+ADE9039_Init             0x800'0a75   0x5e  Code  Lc  main.o [1]
+ADE9039_WriteReg         0x800'0a15   0x5c  Code  Lc  main.o [1]
+CHECKSUM$$Base           0x800'0d10          --   Gb  - Linker created -
+CHECKSUM$$Limit          0x800'0d14          --   Gb  - Linker created -
+CSTACK$$Base            0x2000'0008          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'0408          --   Gb  - Linker created -
+ConfigurePulseInput      0x800'0ad9   0x4e  Code  Lc  main.o [1]
+LL_APB1_GRP1_EnableClock
+                         0x800'0235   0x16  Code  Lc  main.o [1]
+LL_APB2_GRP1_EnableClock
+                         0x800'024b   0x16  Code  Lc  main.o [1]
+LL_FLASH_GetLatency      0x800'0285    0xa  Code  Lc  main.o [1]
+LL_FLASH_SetLatency      0x800'0277    0xe  Code  Lc  main.o [1]
+LL_GPIO_ResetOutputPin   0x800'0515    0x4  Code  Lc  main.o [1]
+LL_GPIO_SetOutputPin     0x800'0511    0x4  Code  Lc  main.o [1]
+LL_IOP_GRP1_EnableClock
+                         0x800'0261   0x16  Code  Lc  main.o [1]
+LL_RCC_GetSysClkSource   0x800'01b9    0xa  Code  Lc  main.o [1]
+LL_RCC_HSI_Enable        0x800'018f    0xe  Code  Lc  main.o [1]
+LL_RCC_HSI_IsReady       0x800'019d    0xe  Code  Lc  main.o [1]
+LL_RCC_PLL_ConfigDomain_SYS
+                         0x800'020d   0x1a  Code  Lc  main.o [1]
+LL_RCC_PLL_Enable        0x800'01f1    0xe  Code  Lc  main.o [1]
+LL_RCC_PLL_EnableDomain_SYS
+                         0x800'0227    0xe  Code  Lc  main.o [1]
+LL_RCC_PLL_IsReady       0x800'01ff    0xe  Code  Lc  main.o [1]
+LL_RCC_SetAHBPrescaler   0x800'01c3    0xe  Code  Lc  main.o [1]
+LL_RCC_SetAPB1Prescaler
+                         0x800'01d1    0xe  Code  Lc  main.o [1]
+LL_RCC_SetSysClkSource   0x800'01ab    0xe  Code  Lc  main.o [1]
+LL_RCC_SetTIMClockSource
+                         0x800'01df   0x12  Code  Lc  main.o [1]
+LL_SPI_Enable            0x800'0519    0xa  Code  Lc  main.o [1]
+LL_SPI_IsActiveFlag_BSY
+                         0x800'053b    0xc  Code  Lc  main.o [1]
+LL_SPI_IsActiveFlag_TXE
+                         0x800'052f    0xc  Code  Lc  main.o [1]
+LL_SPI_SetStandard       0x800'0523    0xc  Code  Lc  main.o [1]
+LL_SPI_TransmitData8     0x800'0547    0x4  Code  Lc  main.o [1]
+LL_TIM_CC_EnableChannel
+                         0x800'02a3    0x8  Code  Lc  main.o [1]
+LL_TIM_DisableARRPreload
+                         0x800'0299    0xa  Code  Lc  main.o [1]
+LL_TIM_DisableDMAReq_TRIG
+                         0x800'04fb    0xa  Code  Lc  main.o [1]
+LL_TIM_DisableIT_TRIG    0x800'04f1    0xa  Code  Lc  main.o [1]
+LL_TIM_DisableMasterSlaveMode
+                         0x800'04dd    0xa  Code  Lc  main.o [1]
+LL_TIM_EnableCounter     0x800'028f    0xa  Code  Lc  main.o [1]
+LL_TIM_EnableIT_UPDATE   0x800'04e7    0xa  Code  Lc  main.o [1]
+LL_TIM_IC_SetFilter      0x800'0399   0x7e  Code  Lc  main.o [1]
+LL_TIM_IC_SetPolarity    0x800'0429   0x70  Code  Lc  main.o [1]
+LL_TIM_OC_DisableFast    0x800'02ab   0x72  Code  Lc  main.o [1]
+LL_TIM_OC_EnablePreload
+                         0x800'031d   0x72  Code  Lc  main.o [1]
+LL_TIM_SetClockSource    0x800'049d    0xc  Code  Lc  main.o [1]
+LL_TIM_SetTriggerInput   0x800'04c5    0xc  Code  Lc  main.o [1]
+LL_TIM_SetTriggerOutput
+                         0x800'04ad    0xc  Code  Lc  main.o [1]
+LL_TIM_SetTriggerOutput2
+                         0x800'04b9    0xc  Code  Lc  main.o [1]
+MX_GPIO_Init             0x800'05b9   0x74  Code  Lc  main.o [1]
+MX_SPI1_Init             0x800'0991   0x7c  Code  Lc  main.o [1]
+MX_TIM14_Init            0x800'06d9   0x9e  Code  Lc  main.o [1]
+MX_TIM1_Init             0x800'0789  0x128  Code  Lc  main.o [1]
+MX_TIM2_Init             0x800'08b9   0xaa  Code  Lc  main.o [1]
+MX_TIM3_Init             0x800'062d   0xa8  Code  Lc  main.o [1]
+OFFSET_TAB_CCMRx         0x800'00bc    0xc  Data  Lc  main.o [1]
+Region$$Table$$Base      0x800'0cfc          --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'0d0c          --   Gb  - Linker created -
+SHIFT_TAB_CCxP           0x800'00e0    0xc  Data  Lc  main.o [1]
+SHIFT_TAB_ICxx           0x800'00d4    0xc  Data  Lc  main.o [1]
+SHIFT_TAB_OCxx           0x800'00c8    0xc  Data  Lc  main.o [1]
+SystemClock_Config       0x800'054b   0x64  Code  Lc  main.o [1]
+VERSION$$Base            0x800'0d20          --   Gb  - Linker created -
+VERSION$$Limit           0x800'0d28          --   Gb  - Linker created -
+__ICFEDIT_region_RAM_end__ {Abs}
+                        0x2000'8fff         Data  Gb  <internal module>
+__ICFEDIT_region_RAM_start__ {Abs}
+                        0x2000'0000         Data  Gb  <internal module>
+__NVIC_EnableIRQ         0x800'00ed   0x18  Code  Lc  main.o [1]
+__NVIC_SetPriority       0x800'0105   0x8a  Code  Lc  main.o [1]
+__aeabi_cfcmple          0x800'0bc9         Code  Gb  FltCmpLe.o [3]
+__aeabi_memset           0x800'0bf1         Code  Gb  ABImemset.o [4]
+__build_checksum         0x800'0d10    0x4  Data  Gb  Place holder __build_checksum
+__cmain                  0x800'0c41         Code  Gb  cmain.o [4]
+__exit                   0x800'0ca1   0x14  Code  Gb  exit.o [5]
+__iar_Memset4_word       0x800'0c11         Code  Gb  ABImemset.o [4]
+__iar_Memset_word        0x800'0bfd         Code  Gb  ABImemset.o [4]
+__iar_data_init3         0x800'0c65   0x28  Code  Gb  data_init.o [4]
+__iar_program_start      0x800'0cb5         Code  Gb  cstartup_M.o [4]
+__iar_zero_init3         0x800'0cc1   0x3c  Code  Gb  zero_init3.o [4]
+__low_level_init         0x800'0c5f    0x4  Code  Gb  low_level_init.o [2]
+__vector_table           0x800'0000         Data  Gb  vector_table_M.o [4]
+__version                0x800'0d20    0x8  Data  Gb  Place holder __version
+_call_main               0x800'0c4d         Code  Gb  cmain.o [4]
+_exit                    0x800'0c95         Code  Gb  cexit.o [4]
+_main                    0x800'0c5b         Code  Gb  cmain.o [4]
+code_block$$Base         0x800'00bc          --   Gb  - Linker created -
+code_block$$Limit        0x800'0d28          --   Gb  - Linker created -
+exit                     0x800'0c8d    0x8  Code  Gb  exit.o [2]
+frequency               0x2000'0000    0x4  Data  Lc  main.o [1]
+main                     0x800'0b27   0x66  Code  Gb  main.o [1]
+memset                   0x800'0bb5   0x14  Code  Gb  memset.o [4]
+newFrequencyAvailable   0x2000'0004    0x4  Data  Lc  main.o [1]
+startTIM14               0x800'0963    0xc  Code  Lc  main.o [1]
+startTIM2                0x800'096f    0xe  Code  Lc  main.o [1]
+startTIM3                0x800'097d    0xc  Code  Lc  main.o [1]
+
+
+[1] = C:\GN_Project
+[2] = dl6M_tln.a
+[3] = m6M_tl.a
+[4] = rt6M_tl.a
+[5] = shb_l.a
+
+  3'152 bytes of readonly  code memory
+     76 bytes of readonly  data memory
+  1'032 bytes of readwrite data memory
+
+Errors: 10
+Warnings: none

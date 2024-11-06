@@ -24,6 +24,9 @@
         <ShowArgs>0</ShowArgs>
     </CallStack>
     <StLinkDriver>
+        <WatchCond>_ 0</WatchCond>
+        <Watch0>_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0</Watch0>
+        <Watch1>_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0</Watch1>
         <stlinkserialNo>43201438</stlinkserialNo>
         <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
