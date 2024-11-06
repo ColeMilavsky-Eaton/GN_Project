@@ -1,7 +1,7 @@
 -include ../makefile.init
 
 COMPONENTS = main
-DRIVER_COMPONENT := utils exti gpio tim spi
+DRIVER_COMPONENT := utils exti gpio tim spi rcc
 
 ###########################################
 ### PATHS
@@ -11,6 +11,7 @@ IAR_PATH = "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm"
 IAR_BIN_PATH = $(IAR_PATH)\bin
 SRC_DIR = Code
 LIB_PATH = C:/dev/libs
+LIST_DIR = list
 
 HAL_DRIVER_PATH = $(LIB_PATH)/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver
 CMSIS_DRIVER_PATH = $(LIB_PATH)/ST/stm32/stm32g0xx/CMSIS
@@ -75,20 +76,20 @@ create_build_dir:
 	@if not exist "$(BUILD_DIR)" mkdir "$(BUILD_DIR)"
 
 C_FILES = $(addsuffix .c, $(COMPONENTS))
-C_FILES = $(addsuffix .c, $(addprefix stm32g0xx_ll_,$(DRIVER_COMPONENT)))
+C_FILES += $(addsuffix .c, $(addprefix stm32g0xx_ll_,$(DRIVER_COMPONENT)))
 C_SRC_DIRS = $(addprefix $(SRC_DIR)/, $(COMPONENTS))
 C_SRC_DIRS += $(HAL_DRIVER_PATH)/src
 
 C_SOURCES = $(join $(addsuffix /, $(C_SRC_DIRS)), $(C_FILES))
-C_SOURCES += $(SRC_DIR)/main.c
+#C_SOURCES += $(SRC_DIR)/main.c
 C_SOURCES += $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c
 C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_tim.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_rcc.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_utils.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_exti.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_gpio.c
-C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_spi.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_tim.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_rcc.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_utils.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_exti.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_gpio.c
+#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_spi.c
 
 # ASM sources
 ASM_SOURCES =  $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/arm/startup_stm32g071xx.s
@@ -200,8 +201,12 @@ $(BUILD_DIR)/%.i: %.c Makefile FORCE
 # Link rule
 $(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) main.o Makefile
 	@echo 'Invoking: Linker'
+	@echo 'C_SOURCES = ' $(C_SOURCES)
 	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
 	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x8000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
+
+$(LIST_DIR):
+	mkdir $@
 
 ###########################################
 ### BUILD TARGETS
