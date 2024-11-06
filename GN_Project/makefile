@@ -185,17 +185,22 @@ $(BUILD_DIR)/%.o: %.c Makefile FORCE
 	@echo 'Finished building: $<'
 	@echo '	'
 
-$(BUILD_DIR)/%.o: %.s Makefile FORCE
-	@echo 'Building file: $<'
-	@echo 'Invoking: Assembler'
-	$(AS) $< -o $@ $(ASFLAGS) 
-	@echo 'Finished building: $<'
-	@echo '	'
+#$(BUILD_DIR)/%.o: %.s Makefile FORCE
+#	@echo 'Building file: $<'
+#	@echo 'Invoking: Assembler'
+#	$(AS) $< -o $@ $(ASFLAGS) 
+#	@echo 'Finished building: $<'
+#	@echo '	'
+	
+$(BUILD_DIR)/%.i: %.c Makefile FORCE
+	@echo **** building $< ****
+	$(CC) $< $(CFLAGS) --preprocess=n $(BUILD_DIR) -o $@
+	@echo ' '
 
 # Link rule
 $(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) main.o Makefile
 	@echo 'Invoking: Linker'
-	$(LN) main.o $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
+	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
 	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x8000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
 
 ###########################################
