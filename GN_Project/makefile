@@ -26,7 +26,7 @@ LNSCRIPT = Code/sys/stm32g071xx_flash.icf
 TARGET = GN_Project
 
 # Build Directory
-BUILD_DIR = Build
+BUILD_DIR = build
 
 ###########################################
 ### TOOLS
@@ -81,18 +81,12 @@ C_SRC_DIRS = $(addprefix $(SRC_DIR)/, $(COMPONENTS))
 C_SRC_DIRS += $(HAL_DRIVER_PATH)/src
 
 C_SOURCES = $(join $(addsuffix /, $(C_SRC_DIRS)), $(C_FILES))
-#C_SOURCES += $(SRC_DIR)/main.c
 C_SOURCES += $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c
 C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_tim.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_rcc.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_utils.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_exti.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_gpio.c
-#C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_ll_spi.c
+C_SOURCES += ../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c
 
 # ASM sources
-ASM_SOURCES =  $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/arm/startup_stm32g071xx.s
+ASM_SOURCES = $(SRC_DIR)/sys/startup_stm32g071xx.s
 
 ###########################################
 ### OBJECTS
@@ -145,10 +139,10 @@ AS_INCLUDES =
 DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h
 
 # Include paths
-C_INCLUDES = -I"C:/GN_Project/Code" \
-C_INCLUDES += -I"C:/GN_Project/Code/protection/main" \
-C_INCLUDES += -I"C:/GN_Project/Code/protection/sys" \
-C_INCLUDES += -I"C:/dev/libs" \
+C_INCLUDES = -I"C:/GN_Project/Code"
+C_INCLUDES += -I"C:/GN_Project/Code/protection/main"
+C_INCLUDES += -I"C:/GN_Project/Code/protection/sys"
+C_INCLUDES += -I"C:/dev/libs"
 C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Include
@@ -170,7 +164,6 @@ ASFLAGS = -s+ -w+ -r --cpu $(CPU) $(AS_DEFS) $(AS_INCLUDES)
 LDSCRIPT = C:\GN_Project\STM32G071CBU6_FLASH.ld
 
 # Linker flags
-#LDFLAGS = -mcpu=cortex-m0plus -mthumb -T$(LDSCRIPT) -Wl,-Map=$(TARGET).map,--cref -Wl,--gc-sections
 LNFLAGS = --redirect _//printf=_//printfFull --redirect _Scanf=_ScanfFull --no_out_extension --semihosting --entry __iar_program_start --vfe --text_out locale 
 LNFLAGS += --place_holder __build_checksum,4,.checksum,16 --keep=__build_checksum 
 LNFLAGS += --place_holder __version,8,.version,16 --keep=__version 
@@ -180,28 +173,24 @@ LIBS = -lc -lm -lnosys
 
 # Compile rule
 $(BUILD_DIR)/%.o: %.c Makefile FORCE
-	@echo 'Building file: $<'
-	@echo 'Invoking: Compiler'
-	$(CC) $(CFLAGS) -o $@
-	@echo 'Finished building: $<'
-	@echo '	'
+	@echo **** building $< ****
+	$(CC) $< $(CFLAGS) -o $@
+	@echo ' '
 
-#$(BUILD_DIR)/%.o: %.s Makefile FORCE
-#	@echo 'Building file: $<'
-#	@echo 'Invoking: Assembler'
-#	$(AS) $< -o $@ $(ASFLAGS) 
-#	@echo 'Finished building: $<'
-#	@echo '	'
-	
 $(BUILD_DIR)/%.i: %.c Makefile FORCE
 	@echo **** building $< ****
 	$(CC) $< $(CFLAGS) --preprocess=n $(BUILD_DIR) -o $@
 	@echo ' '
+	
+$(BUILD_DIR)/%.o: %.s Makefile
+	@echo **** building $< ****
+	$(AS) $< -o $@ $(ASFLAGS) 
+	@echo ' '
 
 # Link rule
-$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) main.o Makefile
+$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(notdir $(C_SOURCES:.c=.o)) $(notdir $(ASM_SOURCES:.s=.o)) Makefile
 	@echo 'Invoking: Linker'
-	@echo 'C_SOURCES = ' $(C_SOURCES)
+	@echo 'OBJECTS = ' $(OBJECTS)
 	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
 	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x8000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
 
@@ -220,7 +209,6 @@ all: create_build_dir $(OBJS) $(BUILD_DIR)/$(TARGET).elf
 clean:
 	@echo 'Cleaning up: $(OBJS) $(TARGET).elf $(TARGET).map'
 	del /Q Build
-	del /Q $(TARGET).map
 	@echo 'Cleaned up object files and binaries.'
 
 # Generate binary and hex files
