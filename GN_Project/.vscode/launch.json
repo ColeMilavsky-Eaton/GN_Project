@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "STM32 Debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/bin/Smart_Breaker_2_0.bin",
+            "device": "STM32G071CB",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32g0xx.cfg"  // Replace with the correct config for your STM32 device
+            ],
+            "svdFile": "${workspaceFolder}/STM32G0xx.svd",  // Optional: path to your SVD file
+            "runToEntryPoint": "main",
+            "preLaunchTask": "Build STM32 Project"
+        }
+    ]
+}
