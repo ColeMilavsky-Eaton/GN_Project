@@ -172,23 +172,23 @@ LNFLAGS += --place_holder __version,8,.version,16 --keep=__version
 LIBS = -lc -lm -lnosys 
 
 # Compile rule
-$(BUILD_DIR)/%.o: %.c Makefile FORCE
+$(BUILD_DIR)/%.o: %.c
 	@echo **** building $< ****
 	$(CC) $< $(CFLAGS) -o $@
 	@echo ' '
 
-$(BUILD_DIR)/%.i: %.c Makefile FORCE
+$(BUILD_DIR)/%.i: %.c
 	@echo **** building $< ****
 	$(CC) $< $(CFLAGS) --preprocess=n $(BUILD_DIR) -o $@
 	@echo ' '
 	
-$(BUILD_DIR)/%.o: %.s Makefile
+$(BUILD_DIR)/%.o: %.s
 	@echo **** building $< ****
 	$(AS) $< -o $@ $(ASFLAGS) 
 	@echo ' '
 
 # Link rule
-$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(notdir $(C_SOURCES:.c=.o)) $(notdir $(ASM_SOURCES:.s=.o)) Makefile
+$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(OBJECTS) Makefile
 	@echo 'Invoking: Linker'
 	@echo 'OBJECTS = ' $(OBJECTS)
 	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map

@@ -62,6 +62,7 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
+	printf("looping...\n");
 	if (newFrequencyAvailable)
 	{
 	  newFrequencyAvailable = 0;

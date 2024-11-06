@@ -74,13 +74,13 @@
         <FreqHi>0</FreqHi>
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
-    <Breakpoints2>
-        <Count>0</Count>
-    </Breakpoints2>
     <CallStackLog>
         <Enabled>0</Enabled>
     </CallStackLog>
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
 </settings>
