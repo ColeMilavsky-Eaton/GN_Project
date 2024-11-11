@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"iar.buildConfigurations": [
+			{
+				"name": "Debug",
+				"project": "GN_Project_IAR.ewp",
+				"workspace": "GN_Project_IAR.eww"
+			}
+		]
+	}
+}

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>4</fileVersion>
+    <fileChecksum>3792125390</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\Debug\Obj\syscalls.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\syscalls.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\sysmem.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\gpio.xcl</file>
+            <file>$PROJ_DIR$\Debug\Exe\GN_Project_IAR.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\GN_Project_IAR.pbd</file>
+            <file>$PROJ_DIR$\src\main\main_api.h</file>
+            <file>$PROJ_DIR$\src\gpio\gpio_internal.h</file>
+            <file>$PROJ_DIR$\src\sys\hardware_init.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\adc.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\gpio.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\adc.o</file>
+            <file>$PROJ_DIR$\src\gpio\gpio_.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\sb2-0_2p_gfci_hardware_init.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\sysmem.o</file>
+            <file>$PROJ_DIR$\src\config\SB\2_pole\GFCI\sb2-0_2p_gfci_hardware_init.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\hardware_init.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.xcl</file>
+            <file>$PROJ_DIR$\bin\Smart_Breaker_2_0.sim</file>
+            <file>$PROJ_DIR$\src\sys\firmware_config_common.h</file>
+            <file>$PROJ_DIR$\src\gpio\gpio_api.h</file>
+            <file>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_.h</file>
+            <file>$PROJ_DIR$\src\main\main.c</file>
+            <file>$PROJ_DIR$\src\gpio\gpio.c</file>
+            <file>$PROJ_DIR$\src\main\main.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\sb2-0_2p_gfci_hardware_init.xcl</file>
+            <file>$PROJ_DIR$\src\main\main_internal.h</file>
+            <file>$PROJ_DIR$\src\sys\startup_stm32g071xx.s</file>
+            <file>$PROJ_DIR$\src\sys\sysmem.c</file>
+            <file>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_api.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\hardware_init.o</file>
+            <file>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc.c</file>
+            <file>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_internal.h</file>
+            <file>$PROJ_DIR$\src\sys\syscalls.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_stm32g071xx.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+        </outputs>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 4</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sys\hardware_init.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\config\SB\2_pole\GFCI\sb2-0_2p_gfci_hardware_init.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\main\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 35</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 17</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\gpio\gpio.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 10</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sys\startup_stm32g071xx.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 34</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sys\sysmem.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 2</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 11</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 9</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sys\syscalls.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 0</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 1</file>
+                </tool>
+            </outputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>

@@ -1,0 +1,21 @@
+{
+  "workbench": {
+    "path": "C:\\Program Files\\IAR Systems\\Embedded Workbench 9.2"
+  },
+  "workspace": {
+    "path": "${workspaceFolder}\\GN_Project_IAR.eww"
+  },
+  "project": {
+    "path": "${workspaceFolder}\\GN_Project_IAR.ewp"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\GN_Project_IAR.eww": {
+      "configs": {
+        "${workspaceFolder}\\GN_Project_IAR.ewp": "Debug"
+      },
+      "selected": {
+        "path": "${workspaceFolder}\\GN_Project_IAR.ewp"
+      }
+    }
+  }
+}
