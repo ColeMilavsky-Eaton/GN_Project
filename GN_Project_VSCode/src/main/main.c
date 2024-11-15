@@ -16,7 +16,7 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
-#include "../../src/main/main.h"
+#include "main.h"
 
 #define TIMCLOCK 64000000
 #define PRESCALAR 65535
@@ -62,7 +62,6 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	printf("looping...\n");
 	if (newFrequencyAvailable)
 	{
 	  newFrequencyAvailable = 0;

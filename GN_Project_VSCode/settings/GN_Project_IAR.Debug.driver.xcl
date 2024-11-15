@@ -4,7 +4,13 @@
 
 "--fpu=None" 
 
+"-p" 
+
+"C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\config\debugger\ST\STM32G031K8.ddf" 
+
 "--semihosting" 
+
+"--drv_interface=SWD" 
 
 "--stlink_reset_strategy=0,0" 
 

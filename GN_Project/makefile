@@ -28,6 +28,8 @@ TARGET = GN_Project
 # Build Directory
 BUILD_DIR = build
 
+SRC_PATH = C:/$(TARGET)/$(SRC_DIR)
+
 ###########################################
 ### TOOLS
 ###########################################
@@ -139,10 +141,10 @@ AS_INCLUDES =
 DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h
 
 # Include paths
-C_INCLUDES = -I"C:/GN_Project/Code"
-C_INCLUDES += -I"C:/GN_Project/Code/protection/main"
-C_INCLUDES += -I"C:/GN_Project/Code/protection/sys"
-C_INCLUDES += -I"C:/dev/libs"
+C_INCLUDES = -I$(SRC_PATH)
+C_INCLUDES += -I$(SRC_PATH)/protection/main
+C_INCLUDES += -I$(SRC_PATH)/protection/sys
+C_INCLUDES += -I$(LIB_PATH)
 C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Include
@@ -159,9 +161,6 @@ ASFLAGS = -s+ -w+ -r --cpu $(CPU) $(AS_DEFS) $(AS_INCLUDES)
 ###########################################
 ### LINK AND COMPILE
 ###########################################
-
-# Linker script
-LDSCRIPT = C:\GN_Project\STM32G071CBU6_FLASH.ld
 
 # Linker flags
 LNFLAGS = --redirect _//printf=_//printfFull --redirect _Scanf=_ScanfFull --no_out_extension --semihosting --entry __iar_program_start --vfe --text_out locale 
@@ -212,10 +211,10 @@ clean:
 	@echo 'Cleaned up object files and binaries.'
 
 # Generate binary and hex files
-$(BUILD_DIR)/GN_Project.hex: $(BUILD_DIR)/GN_Project.elf
+$(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
 	$(HEX) $< $@
 
-$(BUILD_DIR)/GN_Project.bin: $(BUILD_DIR)/GN_Project.elf
+$(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
 	$(CP) -O binary $< $@
 	
 # Load hardware configuration

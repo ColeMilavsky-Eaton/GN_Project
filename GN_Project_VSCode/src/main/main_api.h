@@ -27,7 +27,7 @@
 #include "types.h"
 #include "utils.h"
 
-#warning this needs to be moved. only here to get code to compile. it is also defined in breaker core
+//#warning this needs to be moved. only here to get code to compile. it is also defined in breaker core
 #define MAX_NUM_POLES                                   (3)
 
 typedef enum

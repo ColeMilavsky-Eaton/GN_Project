@@ -2,13 +2,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "IAR Debug",
+            "name": "Cortex Debug (ST-Link)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "stlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/GN_Project_VSCode.elf",
+            "device": "STM32G071CB",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32g0x.cfg"
+            ],
+            "svdFile": "${workspaceFolder}/STM32G071.svd",
+            "runToEntryPoint": "main",
+            "preLaunchTask": "Build GN Project"
+        },
+        {
+            "name": "GN_Project Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/GN_Project.elf",
+            "program": "${workspaceFolder}/build/GN_Project_VSCode.elf",
             "cwd": "${workspaceFolder}",
             "miDebuggerPath": "C:/Program Files/IAR Systems/Embedded Workbench 9.2/common/bin/CSpyServer2.exe",
-            "miDebuggerArgs": "--backend --endian=little --cpu=Cortex-M0+ --fpu=None --semihosting --config=C:/GN_Project/Code/sys/stm32g071xx_flash.icf --drv=ST-LINK --port=SWD --device=STM32G071CB",
+            "miDebuggerArgs": "--backend --endian=little --cpu=Cortex-M0+ --fpu=None --semihosting --config=C:/GN_Project_VSCode/src/sys/stm32g031xx_flash.icf --drv=ST-LINK/V2 --port=SWD --device=STM32G031CB",
             "setupCommands": [
                 {
                     "text": "target remote :2331"
@@ -24,13 +40,13 @@
             "externalConsole": false,
             "MIMode": "gdb"
         },
-        /*{
+        {
             "type": "cspy",
             "request": "launch",
-            "name": "Launch: GN_Project_IAR.Debug",
+            "name": "GN_Project_IAR Debug",
             "target": "arm",
-            "program": "${workspaceFolder}\\Debug\\Exe\\GN_Project_IAR.out",
-            "driver": "Simulator",
+            "program": "${workspaceFolder}\\build\\GN_Project_VSCode.elf",//"${workspaceFolder}\\Debug\\Exe\\GN_Project_IAR.out",
+            "driver": "ST-LINK",
             "stopOnSymbol": "main",
             "workbenchPath": "${command:iar-config.toolchain}",
             "projectPath": "${workspaceFolder}\\GN_Project_IAR.ewp",
@@ -38,11 +54,11 @@
             "driverOptions": [
                 "--crun=disabled",
                 "--endian=little",
-                "--cpu=Cortex-M3",
+                "--cpu=Cortex-M0+",
                 "--fpu=None",
                 "--semihosting",
                 "--multicore_nr_of_cores=1"
             ]
-        }*/
+        }
     ]
 }

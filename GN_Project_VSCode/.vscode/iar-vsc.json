@@ -17,5 +17,8 @@
         "path": "${workspaceFolder}\\GN_Project_IAR.ewp"
       }
     }
+  },
+  "configs": {
+    "${workspaceFolder}\\GN_Project_IAR.ewp": "Debug"
   }
 }

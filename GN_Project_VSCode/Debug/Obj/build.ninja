@@ -20,17 +20,30 @@ rule browsedata
 
 
 #Build steps
+build stm32g0xx_hal.pbi : index stm32g0xx_hal.xcl
+build stm32g0xx_hal_cortex.pbi : index stm32g0xx_hal_cortex.xcl
+build stm32g0xx_ll_adc.pbi : index stm32g0xx_ll_adc.xcl
+build stm32g0xx_ll_dma.pbi : index stm32g0xx_ll_dma.xcl
+build stm32g0xx_ll_exti.pbi : index stm32g0xx_ll_exti.xcl
+build stm32g0xx_ll_gpio.pbi : index stm32g0xx_ll_gpio.xcl
+build stm32g0xx_ll_pwr.pbi : index stm32g0xx_ll_pwr.xcl
+build stm32g0xx_ll_rcc.pbi : index stm32g0xx_ll_rcc.xcl
+build stm32g0xx_ll_spi.pbi : index stm32g0xx_ll_spi.xcl
+build stm32g0xx_ll_tim.pbi : index stm32g0xx_ll_tim.xcl
+build stm32g0xx_ll_usart.pbi : index stm32g0xx_ll_usart.xcl
+build stm32g0xx_ll_utils.pbi : index stm32g0xx_ll_utils.xcl
+build system_stm32g0xx.pbi : index system_stm32g0xx.xcl
 build adc.pbi : index adc.xcl
-build gpio.pbi : index gpio.xcl
 build sb2-0_2p_gfci_hardware_init.pbi : index sb2-0_2p_gfci_hardware_init.xcl
+build gpio.pbi : index gpio.xcl
 build main.pbi : index main.xcl
 build hardware_init.pbi : index hardware_init.xcl
-build syscalls.pbi : index syscalls.xcl
-build sysmem.pbi : index sysmem.xcl
-build GN_Project_IAR_part0.pbi : link adc.pbi gpio.pbi sb2-0_2p_gfci_hardware_init.pbi
-build GN_Project_IAR_part1.pbi : link main.pbi hardware_init.pbi syscalls.pbi
-build GN_Project_IAR_part2.pbi : link sysmem.pbi
-build GN_Project_IAR.pbd : link GN_Project_IAR_part0.pbi GN_Project_IAR_part1.pbi GN_Project_IAR_part2.pbi
+build GN_Project_IAR_part0.pbi : link stm32g0xx_hal.pbi stm32g0xx_hal_cortex.pbi stm32g0xx_ll_adc.pbi stm32g0xx_ll_dma.pbi
+build GN_Project_IAR_part1.pbi : link stm32g0xx_ll_exti.pbi stm32g0xx_ll_gpio.pbi stm32g0xx_ll_pwr.pbi stm32g0xx_ll_rcc.pbi
+build GN_Project_IAR_part2.pbi : link stm32g0xx_ll_spi.pbi stm32g0xx_ll_tim.pbi stm32g0xx_ll_usart.pbi stm32g0xx_ll_utils.pbi
+build GN_Project_IAR_part3.pbi : link system_stm32g0xx.pbi adc.pbi sb2-0_2p_gfci_hardware_init.pbi gpio.pbi
+build GN_Project_IAR_part4.pbi : link main.pbi hardware_init.pbi
+build GN_Project_IAR.pbd : link GN_Project_IAR_part0.pbi GN_Project_IAR_part1.pbi GN_Project_IAR_part2.pbi GN_Project_IAR_part3.pbi GN_Project_IAR_part4.pbi
 build GN_Project_IAR.pbw : browsedata GN_Project_IAR.pbd
 
 

@@ -27,7 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
-#include "../../src/main/main_internal.h"
+#include "main_internal.h"
 #include "stm32g0xx_ll_spi.h"
 
 #if defined(USE_FULL_ASSERT)
@@ -51,7 +51,7 @@ extern "C" {
 #define TIMCLOCK 64000000
 #define PRESCALAR 65535
 
-#define HAL_MODULE_ENABLED
+//#define HAL_MODULE_ENABLED
 
 /* Private Variables ---------------------------------------------*/
 static float frequency = 0;

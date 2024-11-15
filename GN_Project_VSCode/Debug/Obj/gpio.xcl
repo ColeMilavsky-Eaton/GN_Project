@@ -1,14 +1,14 @@
-"C:\GN_Project\src\gpio\gpio.c"
+"C:\GN_Project_VSCode\src\gpio\gpio.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
 -MD
 -MF
-C:\GN_Project\Debug\Obj\gpio.pbi.dep
+C:\GN_Project_VSCode\Debug\Obj\gpio.pbi.dep
 -o
 gpio.pbi
 -I
-C:\GN_Project\src\gpio
+C:\GN_Project_VSCode\src\gpio
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin
 -I
@@ -18,15 +18,21 @@ C:\dev\libs\ST\stm32\stm32g0xx\CMSIS\Include
 -I
 C:\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Inc
 -I
+C:\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src
+-I
 C:\dev\libs\utilities\utilities-0.0.2\inc
 -I
-C:\GN_Project\src\main
+C:\STM32Cube_FW_G0_V1.6.0\Drivers\CMSIS\Include
 -I
-C:\GN_Project\src\adc
+C:\STM32Cube_FW_G0_V1.6.0\Drivers\STM32G0xx_HAL_Driver\Inc
 -I
-C:\GN_Project\src\sys
+C:\GN_Project_VSCode\src\main
 -I
-C:\GN_Project\src\gpio
+C:\GN_Project_VSCode\src\sys
+-I
+C:\GN_Project_VSCode\src\gpio
+-I
+C:\GN_Project_VSCode\src\adc
 -I
 C:
 -I
@@ -42,15 +48,21 @@ C:\dev\libs\ST\stm32\stm32g0xx\CMSIS\Include
 -I
 C:\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Inc
 -I
+C:\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src
+-I
 C:\dev\libs\utilities\utilities-0.0.2\inc
 -I
-C:\GN_Project\src\main
+C:\STM32Cube_FW_G0_V1.6.0\Drivers\CMSIS\Include
 -I
-C:\GN_Project\src\adc
+C:\STM32Cube_FW_G0_V1.6.0\Drivers\STM32G0xx_HAL_Driver\Inc
 -I
-C:\GN_Project\src\sys
+C:\GN_Project_VSCode\src\main
 -I
-C:\GN_Project\src\gpio
+C:\GN_Project_VSCode\src\sys
+-I
+C:\GN_Project_VSCode\src\gpio
+-I
+C:\GN_Project_VSCode\src\adc
 -I
 C:
 -D__CHAR_BITS__=8
@@ -303,6 +315,9 @@ C:
 -D__EDG_FLOAT80_ENABLING_POSSIBLE=0
 -D__EDG_FLOAT128_ENABLING_POSSIBLE=0
 -D__EDG_INT128_EXTENSIONS_ALLOWED=0
+-DUSE_FULL_LL_DRIVER=1
+-DHAL_MODULE_ENABLED=1
+-DEXCLUDE_FROM_BUILD=1
 -D_DLIB_CONFIG_FILE_HEADER_NAME="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\arm\\inc\\c\\DLib_Config_Normal.h"
 -D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\arm\\inc\\c\\DLib_Config_Normal.h"
 -D__VERSION__="IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM"

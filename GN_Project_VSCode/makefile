@@ -20,13 +20,15 @@ CONFIG_FILE_PATH := $(SRC_DIR)\config\SB\2_pole\GFCI
 UTILS_PATH = $(LIB_PATH)/utilities
 
 # link script
-LNSCRIPT = $(SRC_DIR)/sys/stm32g071xx_flash.icf
+LNSCRIPT = $(SRC_DIR)/sys/stm32g031xx_flash.icf
 
 # Project name
-TARGET = GN_Project
+TARGET = GN_Project_VSCode
 
 # Build Directory
 BUILD_DIR = build
+
+SRC_PATH = C:/$(TARGET)/$(SRC_DIR)
 
 ###########################################
 ### TOOLS
@@ -83,10 +85,13 @@ C_SRC_DIRS += $(HAL_DRIVER_PATH)/src
 C_SOURCES = $(join $(addsuffix /, $(C_SRC_DIRS)), $(C_FILES))
 C_SOURCES += $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c
 C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal.c
-C_SOURCES += ../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c
+C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal_cortex.c
+
+API_H += $(foreach dir,$(HEADER_DIRS),$(wildcard $(dir)/*.h))
+API_H += $(foreach dir,$(C_SRC_DIRS),$(wildcard $(dir)/*api.h))
 
 # ASM sources
-ASM_SOURCES = $(SRC_DIR)/sys/startup_stm32g071xx.s
+ASM_SOURCES = $(SRC_DIR)/sys/startup_stm32g031xx.s
 
 ###########################################
 ### OBJECTS
@@ -126,7 +131,7 @@ C_DEFS =  \
 -DPREFETCH_ENABLE=0 \
 -DINSTRUCTION_CACHE_ENABLE=1 \
 -DDATA_CACHE_ENABLE=1 \
--DSTM32G071xx
+-DSTM32G031xx
 
 ###########################################
 ### INCLUDES
@@ -139,10 +144,10 @@ AS_INCLUDES =
 DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h
 
 # Include paths
-C_INCLUDES = -I"C:/GN_Project/Code"
-C_INCLUDES += -I"C:/GN_Project/Code/protection/main"
-C_INCLUDES += -I"C:/GN_Project/Code/protection/sys"
-C_INCLUDES += -I"C:/dev/libs"
+C_INCLUDES = -I$(SRC_PATH)
+C_INCLUDES += -I$(SRC_PATH)/protection/main
+C_INCLUDES += -I$(SRC_PATH)/protection/sys
+C_INCLUDES += -I$(LIB_PATH)
 C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Include
@@ -160,16 +165,13 @@ ASFLAGS = -s+ -w+ -r --cpu $(CPU) $(AS_DEFS) $(AS_INCLUDES)
 ### LINK AND COMPILE
 ###########################################
 
-# Linker script
-LDSCRIPT = C:\GN_Project\STM32G071CBU6_FLASH.ld
-
 # Linker flags
 LNFLAGS = --redirect _//printf=_//printfFull --redirect _Scanf=_ScanfFull --no_out_extension --semihosting --entry __iar_program_start --vfe --text_out locale 
 LNFLAGS += --place_holder __build_checksum,4,.checksum,16 --keep=__build_checksum 
 LNFLAGS += --place_holder __version,8,.version,16 --keep=__version 
 
 # Libraries
-LIBS = -lc -lm -lnosys 
+LIBS = -lc -lm -lnosys
 
 # Compile rule
 $(BUILD_DIR)/%.o: %.c
@@ -212,10 +214,10 @@ clean:
 	@echo 'Cleaned up object files and binaries.'
 
 # Generate binary and hex files
-$(BUILD_DIR)/GN_Project.hex: $(BUILD_DIR)/GN_Project.elf
+$(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
 	$(HEX) $< $@
 
-$(BUILD_DIR)/GN_Project.bin: $(BUILD_DIR)/GN_Project.elf
+$(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
 	$(CP) -O binary $< $@
 	
 # Load hardware configuration

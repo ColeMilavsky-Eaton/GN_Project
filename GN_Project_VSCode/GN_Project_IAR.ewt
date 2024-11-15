@@ -2370,43 +2370,70 @@
         </settings>
     </configuration>
     <group>
-        <name>adc</name>
-        <file>
-            <name>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_api.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\GN_Project_Test\src\adc\adc_internal.h</name>
-        </file>
-    </group>
-    <group>
         <name>bin</name>
         <file>
             <name>$PROJ_DIR$\bin\Smart_Breaker_2_0.sim</name>
         </file>
     </group>
     <group>
-        <name>gpio</name>
+        <name>HAL_LL_SRC</name>
         <file>
-            <name>$PROJ_DIR$\src\gpio\gpio.c</name>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_hal.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\gpio\gpio_.h</name>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_hal_cortex.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\gpio\gpio_api.h</name>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_adc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\gpio\gpio_internal.h</name>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_dma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_exti.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_pwr.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_rcc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_spi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_tim.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_usart.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\STM32G0xx_HAL_Driver\Src\stm32g0xx_ll_utils.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\dev\libs\ST\stm32\stm32g0xx\CMSIS\Device\ST\STM32G0xx\Source\Templates\system_stm32g0xx.c</name>
         </file>
     </group>
     <group>
         <name>src</name>
+        <group>
+            <name>adc</name>
+            <file>
+                <name>$PROJ_DIR$\src\adc\adc.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\adc\adc_.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\adc\adc_api.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\adc\adc_internal.h</name>
+            </file>
+        </group>
         <group>
             <name>config</name>
             <group>
@@ -2421,6 +2448,21 @@
                     </group>
                 </group>
             </group>
+        </group>
+        <group>
+            <name>gpio</name>
+            <file>
+                <name>$PROJ_DIR$\src\gpio\gpio.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\gpio\gpio_.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\gpio\gpio_api.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\gpio\gpio_internal.h</name>
+            </file>
         </group>
         <group>
             <name>main</name>
@@ -2446,13 +2488,7 @@
                 <name>$PROJ_DIR$\src\sys\hardware_init.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\src\sys\startup_stm32g071xx.s</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\src\sys\syscalls.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\src\sys\sysmem.c</name>
+                <name>$PROJ_DIR$\src\sys\startup_stm32g031xx.s</name>
             </file>
         </group>
     </group>

@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "path": "../../GN_Project_VSCode"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.pin_config": "c"
+        }
+    }
+}

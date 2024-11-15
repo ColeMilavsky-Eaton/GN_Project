@@ -26,6 +26,7 @@
  * TODO JF: Modify this file to match SB2.0 pinout.
  *
  **************************************************************************************************/
+#ifndef EXCLUDE_FROM_BUILD
 #include "main_internal.h"
 #include "firmware.config"
 #include "types.h"
@@ -477,7 +478,7 @@ void reconfigure_cap_config_output(void)
     LL_GPIO_Init(STARTUP_CAP_CONF_GPIO_Port, &GPIO_InitStruct);
 }
 
-/*
+
 void spi_init_component(void)
 {
     LL_SPI_InitTypeDef SPI_InitStruct = {0};
@@ -544,5 +545,5 @@ void spi_init_component(void)
 
     return;
 }
-*/
 
+#endif

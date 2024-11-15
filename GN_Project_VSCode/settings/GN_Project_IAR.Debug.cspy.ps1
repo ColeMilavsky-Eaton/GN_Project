@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\GN_Project\settings\GN_Project_IAR.Debug.general.xcl" --backend -f "C:\GN_Project\settings\GN_Project_IAR.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\GN_Project_VSCode\settings\GN_Project_IAR.Debug.general.xcl" --backend -f "C:\GN_Project_VSCode\settings\GN_Project_IAR.Debug.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\GN_Project\settings\GN_Project_IAR.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\GN_Project\settings\GN_Project_IAR.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\GN_Project_VSCode\settings\GN_Project_IAR.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\GN_Project_VSCode\settings\GN_Project_IAR.Debug.driver.xcl" 
 }

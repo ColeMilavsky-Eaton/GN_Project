@@ -40,9 +40,9 @@
         MODULE  ?cstartup
 
         ;; Forward declaration of sections.
-        SECTION CSTACK:DATA:NOROOT(3)
+        SECTION CSTACK:DATA(3); SECTION CSTACK:DATA:NOROOT(3)
 
-        SECTION .intvec:CODE:NOROOT(2)
+        SECTION .intvec:CODE(2); SECTION .intvec:CODE:NOROOT(2)
 
         EXTERN  __iar_program_start
         EXTERN  SystemInit

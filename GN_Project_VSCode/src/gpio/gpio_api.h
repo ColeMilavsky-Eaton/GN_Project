@@ -29,13 +29,12 @@
 /**
  * @brief GPIO bit set and reset type define.
  */
- typedef enum
- {
-     GPIO_PIN_RESET = 0UL,
-     GPIO_PIN_SET = 1UL,
-     GPIO_PIN_STATE_UNKNOWN = 255UL
-
- } gpio_pin_state_t;
+typedef enum
+{
+   MY_GPIO_PIN_RESET = 0UL,
+   MY_GPIO_PIN_SET = 1UL,
+   GPIO_PIN_STATE_UNKNOWN = 255UL
+} gpio_pin_state_t;
 
  /*************************************************************************************************/
  /**

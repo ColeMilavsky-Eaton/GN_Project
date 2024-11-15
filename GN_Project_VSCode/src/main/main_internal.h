@@ -23,6 +23,7 @@
  *//*
  *
  **************************************************************************************************/
+#include <stdio.h>
 #include "types.h"
 #include "utils.h"
 #include "stm32g0xx_ll_adc.h"
@@ -39,6 +40,7 @@
 #include "stm32g0xx_ll_pwr.h"
 #include "stm32g0xx_ll_dma.h"
 #include "stm32g0xx_ll_usart.h"
+#include "stm32g0xx_ll_adc.h"
 
 #if BOARD_CONFIGURATION != BOARD_SB2  //Smart Breaker boards do not contain spi interface
 #include "stm32g0xx_ll_spi.h"
