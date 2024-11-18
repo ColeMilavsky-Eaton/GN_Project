@@ -62,18 +62,18 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	if (newFrequencyAvailable)
+	/*if (newFrequencyAvailable)
 	{
 	  newFrequencyAvailable = 0;
 
 	  // Check for ground neutral fault
-	  if (frequency < 1500000) // Not sure exact value to compare frequency with(frequency should equal 2000000)
+	  if (frequency > 2100000) // Not sure exact value to compare frequency with(frequency should equal 2000000)
 	  {
 	     // Handle fault condition
 	     LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
 	     while(1) {} // Latch in fault state
 	  }
-	}
+	}*/
   }
 }
 

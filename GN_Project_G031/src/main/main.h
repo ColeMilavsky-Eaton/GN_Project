@@ -54,9 +54,14 @@ extern "C" {
 #define HAL_MODULE_ENABLED
 
 /* Private Variables ---------------------------------------------*/
-static float frequency = 0;
+//static float frequency = 0;
+static int firstCaptured = 0;
+static uint32_t difference = 0;
 static uint32_t lastCaptureValue = 0;
-static int newFrequencyAvailable = 0;
+//static int newFrequencyAvailable = 0;
+
+static uint32_t CF3_1 = 0;
+static uint32_t CF3_2 = 0;
 
 /* Exported Functions ---------------------------------------------*/
 /**
@@ -258,7 +263,7 @@ static void MX_TIM1_Init(void)
 
 	/* TIM1 interrupt Init */
 	NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 0);
-	NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
+	//NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
 
 	TIM_InitStruct.Prescaler = 65535;
 	TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
@@ -514,10 +519,37 @@ static void ConfigurePulseInput(void)
   */
 static void EXTI4_15_IRQHandler(void)
 {
-	if (LL_EXTI_ReadFallingFlag_0_31(LL_EXTI_LINE_6))
+	if (LL_TIM_IsActiveFlag_UPDATE(TIM1)) // LL_EXTI_ReadFallingFlag_0_31(LL_EXTI_LINE_6)
 	{
-		LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_6);
+		LL_TIM_ClearFlag_UPDATE(TIM1); // LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_6);
 
+		if(firstCaptured == 0)
+		{
+			CF3_1 = LL_TIM_GetCounter(TIM2);
+			firstCaptured = 1;
+		}
+		else
+		{
+			CF3_2 = LL_TIM_GetCounter(TIM2);
+
+			if(CF3_2 > CF3_1)
+			{
+				difference = CF3_2 - CF3_1;
+			}
+			else if(CF3_2 < CF3_1)
+			{
+				difference = (0xffff - CF3_1) + CF3_2;
+			}
+		}
+
+		if(difference > 15)
+		{
+			// Handle fault condition
+			LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
+			while(1) {} // Latch in fault state
+		}
+
+		/*
 		uint32_t currentCapture = LL_TIM_GetCounter(TIM2);
 		uint32_t diffCapture;
 
@@ -533,7 +565,18 @@ static void EXTI4_15_IRQHandler(void)
 		frequency = (float)SystemCoreClock / (float)diffCapture;
 		lastCaptureValue = currentCapture;
 		newFrequencyAvailable = 1;
+		*/
 	}
+}
+/**
+ * @brief Configures pin X (temporarily PA6, need to determine a good pin) for interrupt handling
+ * @param None
+ * @retval None
+ */
+static void IRQConfig()
+{
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_6, LL_GPIO_PULL_NO);
 }
 /**
   * @brief  Reports the name of the source file and the source line number
