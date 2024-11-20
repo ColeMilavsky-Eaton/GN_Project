@@ -17,6 +17,7 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "../../src/main/main.h"
+#include <stdio.h>
 
 #define TIMCLOCK 64000000
 #define PRESCALAR 65535
@@ -43,37 +44,28 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM3_Init();
+  //MX_TIM3_Init();
   MX_TIM14_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
 
   MX_SPI1_Init();
-  ConfigurePulseInput();
-
-  // Initialize ADE9039
-  ADE9039_Init();
 
   // Start the timers
   startTIM14();  // Start Timer 14
   startTIM2();   // Start Timer 2
-  startTIM3();   // Start Timer 3
+  //startTIM3();   // Start Timer 3
+
+  // Initialize ADE9039
+  ADE9039_Init();
+
+  ConfigurePulseInput();
 
   /* Infinite loop */
   while (1)
   {
-	/*if (newFrequencyAvailable)
-	{
-	  newFrequencyAvailable = 0;
-
-	  // Check for ground neutral fault
-	  if (frequency > 2100000) // Not sure exact value to compare frequency with(frequency should equal 2000000)
-	  {
-	     // Handle fault condition
-	     LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
-	     while(1) {} // Latch in fault state
-	  }
-	}*/
+	uint32_t value = retCF3();
+	printf("CF3 Value: %lu\n", value);
   }
 }
 

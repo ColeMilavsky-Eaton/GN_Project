@@ -263,7 +263,7 @@ static void MX_TIM1_Init(void)
 
 	/* TIM1 interrupt Init */
 	NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 0);
-	//NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
+	NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
 
 	TIM_InitStruct.Prescaler = 65535;
 	TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
@@ -477,9 +477,9 @@ static void ADE9039_Init(void)
   ADE9039_WriteReg(0x420, 0x00100000);  // Set WTHR
   ADE9039_WriteReg(0x421, 0x00100000);  // Set VARTHR
   ADE9039_WriteReg(0x422, 0x00100000);  // Set VATHR
-  ADE9039_WriteReg(0x425, 0x00000000);  // Set CF calibration pulse width (adjust as needed)
+  ADE9039_WriteReg(0x425, 0x00000100);  // Set CF calibration pulse width (256 microseconds)
   ADE9039_WriteReg(0x490, 0x0001);       // Set CFMODE to enable CF3
-  ADE9039_WriteReg(0x496, 0xFFFF);       // Set CF3 denominator (adjust as needed)
+  ADE9039_WriteReg(0x496, 0x1000);       // Set CF3 denominator (4096)
 }
 /* --------------------------------------------------------------- */
 /**
@@ -487,12 +487,13 @@ static void ADE9039_Init(void)
   * @param  None
   * @retval None
   */
+
 static void ConfigurePulseInput(void)
 {
 	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	/* Enable GPIO clock */
-	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOC);
+	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA); // Changed from GPIOC
 
 	/* Configure GPIO pin for pulse input */
 	GPIO_InitStruct.Pin = LL_GPIO_PIN_0;  /* Assuming PA0 is connected to CF3 */
@@ -507,23 +508,19 @@ static void ConfigurePulseInput(void)
 	EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
 	EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
 	LL_EXTI_Init(&EXTI_InitStruct);
-
-	/* Enable EXTI4_15 interrupt */
-	NVIC_EnableIRQ(EXTI4_15_IRQn);
 }
-/* --------------------------------------------------------------- */
 /**
-  * @brief  This function handles EXTI4_15 interrupt
+  * @brief  This function handles TIM1_BRK_UP_TRG_COM interrupt
   * @param  None
   * @retval None
   */
-static void EXTI4_15_IRQHandler(void)
+void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 {
-	if (LL_TIM_IsActiveFlag_UPDATE(TIM1)) // LL_EXTI_ReadFallingFlag_0_31(LL_EXTI_LINE_6)
-	{
-		LL_TIM_ClearFlag_UPDATE(TIM1); // LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_6);
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM1))
+    {
+        LL_TIM_ClearFlag_UPDATE(TIM1); // Clear the update flag
 
-		if(firstCaptured == 0)
+        if(firstCaptured == 0)
 		{
 			CF3_1 = LL_TIM_GetCounter(TIM2);
 			firstCaptured = 1;
@@ -540,6 +537,7 @@ static void EXTI4_15_IRQHandler(void)
 			{
 				difference = (0xffff - CF3_1) + CF3_2;
 			}
+			firstCaptured = 0;
 		}
 
 		if(difference > 15)
@@ -548,35 +546,11 @@ static void EXTI4_15_IRQHandler(void)
 			LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
 			while(1) {} // Latch in fault state
 		}
-
-		/*
-		uint32_t currentCapture = LL_TIM_GetCounter(TIM2);
-		uint32_t diffCapture;
-
-		if (currentCapture > lastCaptureValue)
-		{
-		  diffCapture = currentCapture - lastCaptureValue;
-		}
-		else
-		{
-		  diffCapture = (0xFFFFFFFF - lastCaptureValue) + currentCapture + 1;
-		}
-
-		frequency = (float)SystemCoreClock / (float)diffCapture;
-		lastCaptureValue = currentCapture;
-		newFrequencyAvailable = 1;
-		*/
 	}
 }
-/**
- * @brief Configures pin X (temporarily PA6, need to determine a good pin) for interrupt handling
- * @param None
- * @retval None
- */
-static void IRQConfig()
+static uint32_t retCF3()
 {
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_INPUT);
-	LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_6, LL_GPIO_PULL_NO);
+	return LL_TIM_GetCounter(TIM2);
 }
 /**
   * @brief  Reports the name of the source file and the source line number
