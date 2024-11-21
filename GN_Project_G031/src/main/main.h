@@ -27,6 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stdio.h>
 #include "main_internal.h"
 #include "stm32g0xx_ll_spi.h"
 
@@ -242,7 +243,6 @@ static void MX_TIM14_Init(void)
 	GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
 	LL_GPIO_Init(PWM_1KHz_GPIO_Port, &GPIO_InitStruct);
 }
-/* --------------------------------------------------------------- */
 /**
   * @brief TIM1 Initialization Function
   * @param None
@@ -544,13 +544,11 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 		{
 			// Handle fault condition
 			LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
-			while(1) {} // Latch in fault state
+			while(1) {
+				printf("TRIGGERED");
+			} // Latch in fault state
 		}
 	}
-}
-static uint32_t retCF3()
-{
-	return LL_TIM_GetCounter(TIM2);
 }
 /**
   * @brief  Reports the name of the source file and the source line number

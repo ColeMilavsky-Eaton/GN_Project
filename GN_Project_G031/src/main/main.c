@@ -16,8 +16,7 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
-#include "../../src/main/main.h"
-#include <stdio.h>
+#include "main.h"
 
 #define TIMCLOCK 64000000
 #define PRESCALAR 65535
@@ -39,22 +38,18 @@ int main(void)
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
 
   /* Configure the system clock */
-  HAL_Init();
   SystemClock_Config();
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_TIM3_Init();
   MX_TIM14_Init();
-  MX_TIM1_Init();
   MX_TIM2_Init();
 
-  MX_SPI1_Init();
-
   // Start the timers
-  startTIM14();  // Start Timer 14
   startTIM2();   // Start Timer 2
-  //startTIM3();   // Start Timer 3
+
+  MX_TIM1_Init();
+  MX_SPI1_Init();
 
   // Initialize ADE9039
   ADE9039_Init();
@@ -62,11 +57,7 @@ int main(void)
   ConfigurePulseInput();
 
   /* Infinite loop */
-  while (1)
-  {
-	uint32_t value = retCF3();
-	printf("CF3 Value: %lu\n", value);
-  }
+  while (1){}
 }
 
 #ifdef  USE_FULL_ASSERT
