@@ -26,7 +26,8 @@
 #include "types.h"
 #include "utils.h"
 #include "stm32g0xx_ll_adc.h"
-#include "stm32g0xx.h"
+#include "stm32g031xx.h"
+//#include "stm32g0xx.h"
 #include "stm32g0xx_hal.h"
 #include "stm32g0xx_hal_conf.h"
 #include "stm32g0xx_ll_iwdg.h"
@@ -45,7 +46,7 @@
 #endif
 #include "stm32g0xx_ll_tim.h"
 #include "stm32g0xx_ll_gpio.h"
-#include "../../src/main/main_api.h"
+#include "main_api.h"
 
 #include "../../src/sys/hardware.pin_config"
 

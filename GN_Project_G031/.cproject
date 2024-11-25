@@ -12,7 +12,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildProperties="" description="" id="iar.arm.toolchain.v8.0.0.30078222" name="Default" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="org.eclipse.cdt.build.core.emptycfg">
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="iar.arm.toolchain.v8.0.0.30078222" name="Default" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="iar.arm.toolchain.v8.0.0.30078222.1205702760" name="/" resourcePath="">
 						<toolChain id="iar.arm.toolchain.v8.0.0.1054357317" name="IAR Toolchain for Arm - (8.x)" superClass="iar.arm.toolchain.v8.0.0">
 							<option id="iar.arm.toolchain.option.misra-c.enable.v8.0.0.1558210911" name="Enable MISRA-C" superClass="iar.arm.toolchain.option.misra-c.enable.v8.0.0"/>

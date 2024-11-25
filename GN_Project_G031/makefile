@@ -1,13 +1,13 @@
 -include ../makefile.init
 
 COMPONENTS = main
-DRIVER_COMPONENT := utils exti gpio tim spi rcc
+DRIVER_COMPONENT := utils exti tim gpio spi rcc
 
 ###########################################
 ### PATHS
 ###########################################
 
-IAR_PATH = "C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm"
+IAR_PATH = "C:/Program Files/IAR Systems/Embedded Workbench 9.2/arm"
 IAR_BIN_PATH = $(IAR_PATH)\bin
 SRC_DIR = src
 LIB_PATH = C:/dev/libs
@@ -28,7 +28,7 @@ TARGET = GN_Project_G031
 # Build Directory
 BUILD_DIR = build
 
-SRC_PATH = C:/$(TARGET)/$(SRC_DIR)
+SRC_PATH = $(SRC_DIR)
 
 ###########################################
 ### TOOLS
@@ -80,12 +80,12 @@ create_build_dir:
 C_FILES = $(addsuffix .c, $(COMPONENTS))
 C_FILES += $(addsuffix .c, $(addprefix stm32g0xx_ll_,$(DRIVER_COMPONENT)))
 C_SRC_DIRS = $(addprefix $(SRC_DIR)/, $(COMPONENTS))
-C_SRC_DIRS += $(HAL_DRIVER_PATH)/src
+C_SRC_DIRS += $(HAL_DRIVER_PATH)/Src
 
 C_SOURCES = $(join $(addsuffix /, $(C_SRC_DIRS)), $(C_FILES))
 C_SOURCES += $(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Source/Templates/system_stm32g0xx.c
 C_SOURCES += $(HAL_DRIVER_PATH)/Src/stm32g0xx_hal.c
-C_SOURCES += ../dev/libs/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c
+C_SOURCES += $(LIB_PATH)/ST/stm32/stm32g0xx/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c
 
 # ASM sources
 ASM_SOURCES = $(SRC_DIR)/sys/startup_stm32g031xx.s
@@ -142,8 +142,6 @@ DLIB = --dlib_config $(IAR_PATH)/inc/c/DLib_Config_Full.h
 
 # Include paths
 C_INCLUDES = -I$(SRC_PATH)
-C_INCLUDES += -I$(SRC_PATH)/protection/main
-C_INCLUDES += -I$(SRC_PATH)/protection/sys
 C_INCLUDES += -I$(LIB_PATH)
 C_INCLUDES += -I$(HAL_DRIVER_PATH)/Inc
 C_INCLUDES += -I$(CMSIS_DRIVER_PATH)/Device/ST/STM32G0xx/Include
@@ -191,7 +189,12 @@ $(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(OBJECTS) Makefile
 	@echo 'Invoking: Linker'
 	@echo 'OBJECTS = ' $(OBJECTS)
 	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
-	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x8000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
+	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-0x0800182c --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x08000000-0x0800182c --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
+#$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(OBJECTS) Makefile
+#	@echo 'Invoking: Linker'
+#	@echo 'OBJECTS = ' $(OBJECTS)
+#	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
+#	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-__build_checksum --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x08000000-__build_checksum --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
 
 $(LIST_DIR):
 	mkdir $@

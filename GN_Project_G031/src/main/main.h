@@ -318,7 +318,6 @@ static void MX_TIM1_Init(void)
 	GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
 	LL_GPIO_Init(PWM_1Hz_GPIO_Port, &GPIO_InitStruct);
 }
-/* --------------------------------------------------------------- */
 /**
   * @brief TIM2 Initialization Function
   * @param None
@@ -326,17 +325,55 @@ static void MX_TIM1_Init(void)
   */
 static void MX_TIM2_Init(void)
 {
+
 	LL_TIM_InitTypeDef TIM_InitStruct = {0};
 
 	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	/* Peripheral clock enable */
+
 	LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
 
 	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-	/**TIM2 GPIO Configuration
-	PA0   ------> TIM2_CH1
-	*/
+
+	GPIO_InitStruct.Pin = CF3_Pin;
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+	GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
+	LL_GPIO_Init(CF3_GPIO_Port, &GPIO_InitStruct);
+
+	TIM_InitStruct.Prescaler = 0;
+	TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
+	TIM_InitStruct.Autoreload = 100;
+	TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
+	LL_TIM_Init(TIM2, &TIM_InitStruct);
+	LL_TIM_DisableARRPreload(TIM2);
+	LL_TIM_SetTriggerInput(TIM2, LL_TIM_TS_TI1FP1);
+	LL_TIM_SetClockSource(TIM2, LL_TIM_CLOCKSOURCE_INTERNAL); // Use internal clock LL_TIM_SetClockSource(TIM2, LL_TIM_CLOCKSOURCE_EXT_MODE1);
+	LL_TIM_IC_SetFilter(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_IC_FILTER_FDIV1);
+	LL_TIM_IC_SetPolarity(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_IC_POLARITY_RISING);
+	LL_TIM_DisableIT_TRIG(TIM2);
+	LL_TIM_DisableDMAReq_TRIG(TIM2);
+	LL_TIM_SetTriggerOutput(TIM2, LL_TIM_TRGO_RESET);
+	LL_TIM_DisableMasterSlaveMode(TIM2);
+
+	LL_TIM_EnableCounter(TIM2);
+
+	/*
+	LL_TIM_InitTypeDef TIM_InitStruct = {0};
+
+	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+
+	LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
+
+
+	//NVIC_SetPriority(TIM2_IRQn, 0);
+	//NVIC_EnableIRQ(TIM2_IRQn);
+
+	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
+
 	GPIO_InitStruct.Pin = CF3_Pin;
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
 	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
@@ -359,9 +396,9 @@ static void MX_TIM2_Init(void)
 	LL_TIM_DisableDMAReq_TRIG(TIM2);
 	LL_TIM_SetTriggerOutput(TIM2, LL_TIM_TRGO_RESET);
 	LL_TIM_DisableMasterSlaveMode(TIM2);
-	/* USER CODE BEGIN TIM2_Init 2 */
-	LL_TIM_EnableCounter(TIM2);
-	/* USER CODE END TIM2_Init 2 */
+
+	LL_TIM_EnableIT_CC1(TIM2);
+	*/
 }
 /* --------------------------------------------------------------- */
 /**
@@ -479,7 +516,7 @@ static void ADE9039_Init(void)
   ADE9039_WriteReg(0x422, 0x00100000);  // Set VATHR
   ADE9039_WriteReg(0x425, 0x00000100);  // Set CF calibration pulse width (256 microseconds)
   ADE9039_WriteReg(0x490, 0x0001);       // Set CFMODE to enable CF3
-  ADE9039_WriteReg(0x496, 0x1000);       // Set CF3 denominator (4096)
+  ADE9039_WriteReg(0x496, 0x0001);       // Set CF3 denominator (1)
 }
 /* --------------------------------------------------------------- */
 /**
@@ -508,46 +545,56 @@ static void ConfigurePulseInput(void)
 	EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
 	EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
 	LL_EXTI_Init(&EXTI_InitStruct);
+
+	/* EXTI_0_1 interrupt init */
+	NVIC_SetPriority(EXTI0_1_IRQn, 0);
+	NVIC_EnableIRQ(EXTI0_1_IRQn);
 }
 /**
-  * @brief  This function handles TIM1_BRK_UP_TRG_COM interrupt
+  * @brief  This function handles EXTI0_1 interrupt
   * @param  None
   * @retval None
   */
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
+void EXTI0_1_IRQHandler(void)
 {
-    if (LL_TIM_IsActiveFlag_UPDATE(TIM1))
-    {
-        LL_TIM_ClearFlag_UPDATE(TIM1); // Clear the update flag
-
-        if(firstCaptured == 0)
+	if (firstCaptured == 0)
+	{
+		//Captures the value of CF3 at the first pulse of the 1Hz signal
+		CF3_1 = LL_TIM_GetCounter(TIM2);
+		firstCaptured = 1;
+	}
+	else
+	{
+		//Captures the value of CF3 at the next pulse of the 1Hz signal
+		CF3_2 = LL_TIM_GetCounter(TIM2);
+		//Calculates the difference between signal pulses of CF3
+		if (CF3_2 > CF3_1)
 		{
-			CF3_1 = LL_TIM_GetCounter(TIM2);
-			firstCaptured = 1;
+			difference = CF3_2 - CF3_1;
 		}
-		else
+		else if (CF3_1 > CF3_2)
 		{
-			CF3_2 = LL_TIM_GetCounter(TIM2);
-
-			if(CF3_2 > CF3_1)
-			{
-				difference = CF3_2 - CF3_1;
-			}
-			else if(CF3_2 < CF3_1)
-			{
-				difference = (0xffff - CF3_1) + CF3_2;
-			}
-			firstCaptured = 0;
+			difference = CF3_1 - CF3_2;
 		}
+		firstCaptured = 0;
 
-		if(difference > 15)
+		// Convert difference to microseconds
+		uint32_t timeInMicroseconds = difference / 64;  // Assuming 64 MHz timer clock
+		// Debugging output
+		printf("CF3_1: %u, CF3_2: %u, Difference: %u\n", CF3_1, CF3_2, difference, timeInMicroseconds);
+	}
+
+	/*This if-statement would inherently trip the breaker because the
+	 impedance change of the CF3 channel is greater than 15*/
+	if (difference > 40)
+	{
+		// Handle fault condition
+		LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
+		while (1)
 		{
-			// Handle fault condition
-			LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_6);  // Break the circuit
-			while(1) {
-				printf("TRIGGERED");
-			} // Latch in fault state
-		}
+			printf("TRIGGERED\n");
+		} // Latch in fault state
+
 	}
 }
 /**
