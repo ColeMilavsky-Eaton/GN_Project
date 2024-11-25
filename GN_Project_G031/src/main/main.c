@@ -42,12 +42,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_TIM1_Init();
   MX_TIM2_Init();
   MX_SPI1_Init();
-
-  // Start the timers
-  startTIM2();   // Start Timer 2
 
   // Initialize ADE9039
   ADE9039_Init();
