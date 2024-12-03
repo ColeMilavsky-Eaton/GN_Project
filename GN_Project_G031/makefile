@@ -7,7 +7,7 @@ DRIVER_COMPONENT := utils exti tim gpio spi rcc
 ### PATHS
 ###########################################
 
-IAR_PATH = "C:/Program Files/IAR Systems/Embedded Workbench 9.2/arm"
+IAR_PATH = "C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.3/arm"
 IAR_BIN_PATH = $(IAR_PATH)\bin
 SRC_DIR = src
 LIB_PATH = C:/dev/libs
@@ -189,7 +189,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(OBJECTS) Makefile
 	@echo 'Invoking: Linker'
 	@echo 'OBJECTS = ' $(OBJECTS)
 	$(LN) $(OBJECTS) $(LIBS) $(LNFLAGS) --config $(LNSCRIPT) -o $(BUILD_DIR)/$(TARGET).elf --map $(BUILD_DIR)/$(TARGET).map
-	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-0x0800182c --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x08000000-0x0800182c --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
+	$(CP) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).elf --fill 0xFF;0x08000000-0x08000c04 --checksum __build_checksum:4,crc=0x04C11DB7,0x0;0x08000000-0x08000c04 --checksum __version:8,crc=0x04C11DB7:i,0x$(FIRMWARE_BUILD_VERSION);
 #$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR) $(LIST_DIR) $(OBJECTS) Makefile
 #	@echo 'Invoking: Linker'
 #	@echo 'OBJECTS = ' $(OBJECTS)
