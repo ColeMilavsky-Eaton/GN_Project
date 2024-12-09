@@ -55,14 +55,14 @@ extern "C" {
 #define HAL_MODULE_ENABLED
 
 /* Private Variables ---------------------------------------------*/
-//static float frequency = 0;
 static int firstCaptured = 0;
 static uint32_t difference = 0;
 static uint32_t lastCaptureValue = 0;
-//static int newFrequencyAvailable = 0;
 
 static uint32_t CF3_1 = 0;
 static uint32_t CF3_2 = 0;
+
+SPI_HandleTypeDef hspi1;
 
 /* Exported Functions ---------------------------------------------*/
 /**
@@ -152,85 +152,6 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
 	LL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
-static void MX_TIM1_Init(void)
-{
-
-  /* USER CODE BEGIN TIM1_Init 0 */
-
-  /* USER CODE END TIM1_Init 0 */
-
-  LL_TIM_InitTypeDef TIM_InitStruct = {0};
-  LL_TIM_OC_InitTypeDef TIM_OC_InitStruct = {0};
-  LL_TIM_BDTR_InitTypeDef TIM_BDTRInitStruct = {0};
-
-  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  LL_RCC_SetTIMClockSource(LL_RCC_TIM1_CLKSOURCE_PCLK1);
-
-  /* Peripheral clock enable */
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_TIM1);
-
-  /* TIM1 interrupt Init */
-  NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
-  NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-
-  /* USER CODE BEGIN TIM1_Init 1 */
-
-  /* USER CODE END TIM1_Init 1 */
-  TIM_InitStruct.Prescaler = 65535;
-  TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 1024;
-  TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
-  TIM_InitStruct.RepetitionCounter = 0;
-  LL_TIM_Init(TIM1, &TIM_InitStruct);
-  LL_TIM_DisableARRPreload(TIM1);
-  LL_TIM_SetClockSource(TIM1, LL_TIM_CLOCKSOURCE_INTERNAL);
-  LL_TIM_OC_EnablePreload(TIM1, LL_TIM_CHANNEL_CH1);
-  TIM_OC_InitStruct.OCMode = LL_TIM_OCMODE_PWM1;
-  TIM_OC_InitStruct.OCState = LL_TIM_OCSTATE_DISABLE;
-  TIM_OC_InitStruct.OCNState = LL_TIM_OCSTATE_DISABLE;
-  TIM_OC_InitStruct.CompareValue = 512;
-  TIM_OC_InitStruct.OCPolarity = LL_TIM_OCPOLARITY_HIGH;
-  TIM_OC_InitStruct.OCNPolarity = LL_TIM_OCPOLARITY_HIGH;
-  TIM_OC_InitStruct.OCIdleState = LL_TIM_OCIDLESTATE_LOW;
-  TIM_OC_InitStruct.OCNIdleState = LL_TIM_OCIDLESTATE_LOW;
-  LL_TIM_OC_Init(TIM1, LL_TIM_CHANNEL_CH1, &TIM_OC_InitStruct);
-  LL_TIM_OC_DisableFast(TIM1, LL_TIM_CHANNEL_CH1);
-  LL_TIM_SetTriggerOutput(TIM1, LL_TIM_TRGO_RESET);
-  LL_TIM_SetTriggerOutput2(TIM1, LL_TIM_TRGO2_RESET);
-  LL_TIM_DisableMasterSlaveMode(TIM1);
-  TIM_BDTRInitStruct.OSSRState = LL_TIM_OSSR_DISABLE;
-  TIM_BDTRInitStruct.OSSIState = LL_TIM_OSSI_DISABLE;
-  TIM_BDTRInitStruct.LockLevel = LL_TIM_LOCKLEVEL_OFF;
-  TIM_BDTRInitStruct.DeadTime = 0;
-  TIM_BDTRInitStruct.BreakState = LL_TIM_BREAK_DISABLE;
-  TIM_BDTRInitStruct.BreakPolarity = LL_TIM_BREAK_POLARITY_HIGH;
-  TIM_BDTRInitStruct.BreakFilter = LL_TIM_BREAK_FILTER_FDIV1;
-  TIM_BDTRInitStruct.BreakAFMode = LL_TIM_BREAK_AFMODE_INPUT;
-  TIM_BDTRInitStruct.Break2State = LL_TIM_BREAK2_DISABLE;
-  TIM_BDTRInitStruct.Break2Polarity = LL_TIM_BREAK2_POLARITY_HIGH;
-  TIM_BDTRInitStruct.Break2Filter = LL_TIM_BREAK2_FILTER_FDIV1;
-  TIM_BDTRInitStruct.Break2AFMode = LL_TIM_BREAK_AFMODE_INPUT;
-  TIM_BDTRInitStruct.AutomaticOutput = LL_TIM_AUTOMATICOUTPUT_DISABLE;
-  LL_TIM_BDTR_Init(TIM1, &TIM_BDTRInitStruct);
-  /* USER CODE BEGIN TIM1_Init 2 */
-  LL_TIM_EnableCounter(TIM1); //Starts the timer
-  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH1); //Enables Channel for PWM Generation
-  LL_TIM_EnableIT_UPDATE(TIM1); //Enables the update interrupt (UIE) for a specific timer.
-  /* USER CODE END TIM1_Init 2 */
-  LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-  /**TIM1 GPIO Configuration
-  PA8   ------> TIM1_CH1
-  */
-  GPIO_InitStruct.Pin = PWM_1Hz_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
-  LL_GPIO_Init(PWM_1Hz_GPIO_Port, &GPIO_InitStruct);
-
-}
 /**
   * @brief TIM2 Initialization Function
   * @param None
@@ -259,42 +180,6 @@ static void MX_TIM2_Init(void)
 
 	// Enable the counter
 	LL_TIM_EnableCounter(TIM2);
-
-	/*
-	LL_TIM_InitTypeDef TIM_InitStruct = {0};
-
-	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-
-	LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
-
-	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-
-	GPIO_InitStruct.Pin = CF3_Pin;
-	GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-	GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
-	LL_GPIO_Init(CF3_GPIO_Port, &GPIO_InitStruct);
-
-	TIM_InitStruct.Prescaler = 0;
-	TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-	TIM_InitStruct.Autoreload = 23999999;
-	TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
-	LL_TIM_Init(TIM2, &TIM_InitStruct);
-	LL_TIM_DisableARRPreload(TIM2);
-	LL_TIM_SetTriggerInput(TIM2, LL_TIM_TS_TI1FP1);
-	LL_TIM_SetClockSource(TIM2, LL_TIM_CLOCKSOURCE_INTERNAL); // Use internal clock LL_TIM_CLOCKSOURCE_EXT_MODE1); // Use external clock
-	LL_TIM_IC_SetFilter(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_IC_FILTER_FDIV1);
-	LL_TIM_IC_SetPolarity(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_IC_POLARITY_RISING);
-	LL_TIM_DisableIT_TRIG(TIM2);
-	LL_TIM_DisableDMAReq_TRIG(TIM2);
-	LL_TIM_SetTriggerOutput(TIM2, LL_TIM_TRGO_RESET);
-	LL_TIM_DisableMasterSlaveMode(TIM2);
-
-	LL_TIM_EnableCounter(TIM2);
-	*/
 }
 /**
   * @brief  Initialize SPI1 for communication with ADE9039
@@ -303,16 +188,17 @@ static void MX_TIM2_Init(void)
   */
 static void MX_SPI1_Init(void)
 {
+
 	LL_SPI_InitTypeDef SPI_InitStruct = {0};
 
 	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 	// Enable clocks for SPI1 and GPIOs
 	LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
-	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
+	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
 
 	// Configure SPI1 pins
-	GPIO_InitStruct.Pin = LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7; //SCK, MISO, MOSI
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7; //CS, SCK, MISO, MOSI
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
 	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
 	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
@@ -331,6 +217,8 @@ static void MX_SPI1_Init(void)
 	SPI_InitStruct.BitOrder = LL_SPI_MSB_FIRST;
 	LL_SPI_Init(SPI1, &SPI_InitStruct);
 	LL_SPI_SetStandard(SPI1, LL_SPI_PROTOCOL_MOTOROLA);
+
+	// Enable SPI1
 	LL_SPI_Enable(SPI1);
 }
 /* --------------------------------------------------------------- */
@@ -343,21 +231,50 @@ static void MX_SPI1_Init(void)
 static void ADE9039_WriteReg(uint16_t reg, uint32_t data)
 {
 	uint8_t tx_buffer[6];
-	tx_buffer[0] = 0x00;  /* Write command */
+	tx_buffer[0] = 0x00;  // Write command
 	tx_buffer[1] = (reg >> 8) & 0xFF;
 	tx_buffer[2] = reg & 0xFF;
 	tx_buffer[3] = (data >> 16) & 0xFF;
 	tx_buffer[4] = (data >> 8) & 0xFF;
 	tx_buffer[5] = data & 0xFF;
 
-	LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_4);  /* CS low */
 	for(int i = 0; i < 6; i++)
 	{
 	while(!LL_SPI_IsActiveFlag_TXE(SPI1));
 	LL_SPI_TransmitData8(SPI1, tx_buffer[i]);
 	}
 	while(LL_SPI_IsActiveFlag_BSY(SPI1));
-	LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);  /* CS high */
+
+}
+uint32_t ADE9039_ReadReg(uint16_t reg)
+{
+    uint8_t tx_buffer[4];
+    uint8_t rx_buffer[4];
+    uint32_t data = 0;
+
+    tx_buffer[0] = 0x01; // Read command
+    tx_buffer[1] = (reg >> 16) & 0xFF; // High byte of register address
+    tx_buffer[2] = (reg >> 8) & 0xFF; // Middle byte of register address
+    tx_buffer[3] = reg & 0xFF; // Low byte of register address
+
+    LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_4);
+    for(int i = 0; i < 4; i++)
+    {
+        while(!LL_SPI_IsActiveFlag_TXE(SPI1));
+        LL_SPI_TransmitData8(SPI1, tx_buffer[i]);
+    }
+    for(int i = 0; i < 4; i++)
+    {
+		while(!LL_SPI_IsActiveFlag_TXE(SPI1));
+		LL_SPI_TransmitData8(SPI1, 0x00); // Send dummy byte
+
+        while(!LL_SPI_IsActiveFlag_RXNE(SPI1));
+        rx_buffer[i] = LL_SPI_ReceiveData8(SPI1);
+    }
+    LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);
+
+    data = (rx_buffer[0] << 24) | (rx_buffer[1] << 16) | (rx_buffer[2] << 8) | rx_buffer[3];
+    return data;
 }
 /* --------------------------------------------------------------- */
 /**
@@ -368,20 +285,24 @@ static void ADE9039_WriteReg(uint16_t reg, uint32_t data)
 static void ADE9039_Init(void)
 {
   /* Reset the chip */
-  ADE9039_WriteReg(0x0010, 0x0001);
-  LL_mDelay(100);  /* Wait for reset */
+  ADE9039_WriteReg(0x0010, 0x0001); // check reset
+  LL_mDelay(100);  // Wait for reset
 
-  /* Configure for specific needs */
-  ADE9039_WriteReg(0x0120, 0x0030);  /* Enable CF3 pulse output */
-  ADE9039_WriteReg(0x0102, 0x0007);  /* Set CF3 source to active power */
+  ADE9039_WriteReg(0x481, 0x1002);		// CONFIG1 (set this way in metrology_hal.c) sets 12 (IRQ0_ON_IRQ1) and 1 (CF3_CFG set high)
+  ADE9039_WriteReg(0x480, 0x0001);		// DSP On
+
+  ADE9039_WriteReg(0x0120, 0x0030);  // Enable CF3 pulse output
+  ADE9039_WriteReg(0x0102, 0x0007);  // Set CF3 source to active power
 
   // Additional configurations for pulse output
   ADE9039_WriteReg(0x420, 0x00100000);  // Set WTHR
   ADE9039_WriteReg(0x421, 0x00100000);  // Set VARTHR
   ADE9039_WriteReg(0x422, 0x00100000);  // Set VATHR
-  ADE9039_WriteReg(0x425, 0x00200000);  // Set CF3 calibration pulse width
-  ADE9039_WriteReg(0x490, 0x0001);       // Set CFMODE to enable CF3
-  ADE9039_WriteReg(0x496, 0x0010);       // Set CF3 denominator (2)
+
+  ADE9039_WriteReg(0x425, 0x00100100);  // Set CF3 calibration pulse width (256 microseconds)
+  ADE9039_WriteReg(0x490, 0x0001);		// Set CFMODE to enable CF3		// ADE9039_WriteReg(0x490, 0xB180);
+  ADE9039_WriteReg(0x496, 0x0010);		// Set CF3 denominator (2)
+  ADE9039_WriteReg(0x4B9, 0x0918);		// Igain = 4, Vgain = 2, Rest Gain of all channels = 1
 }
 /* --------------------------------------------------------------- */
 /**
